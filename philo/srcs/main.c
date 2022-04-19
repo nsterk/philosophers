@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 15:39:43 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/19 18:22:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ static void	*do_stuff(void *arg)
 	struct timeval end;
 	int printed = 0;
 	
-	// pthread_mutex_lock(&data->lock);
-	while (1)
+	pthread_mutex_lock(&data->death_mutex);
+	while (1 && !data->death)
 	{
+		pthread_mutex_unlock(&data->death_mutex);
 		gettimeofday(&end, NULL);
 		pthread_mutex_lock(&thread->thread_mutex);
 		if (!thread->last_meal)
@@ -32,21 +33,15 @@ static void	*do_stuff(void *arg)
 			}
 		else
 		{
-			pthread_mutex_lock(&data->death_mutex[thread->id - 1]);
-			if (!printed)
-			{
-				printf("\033[34mDO STUFF address mutex thread id %i: %p\n\033[0m", thread->id, &data->death_mutex[thread->id -1]);
-				printed = 1;
-			}
-			thread->dead = 1;
-			pthread_mutex_unlock(&data->death_mutex[thread->id - 1]);
+			pthread_mutex_lock(&data->death_mutex);
+			data->death = 1;
+			pthread_mutex_unlock(&data->death_mutex);
 			log_message(thread, get_timestamp(end) - thread->start_ms, STATE_DEAD);
-			// printf("%lld %i has DIED\n", get_timestamp(end) - thread->start_ms, thread->id);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&thread->thread_mutex);
+		pthread_mutex_lock(&data->death_mutex);
 	}
-	// pthread_mutex_unlock(&data->lock);
 	return (NULL);
 }
 
@@ -57,8 +52,8 @@ static int		init_threads(int nr, t_data *data)
 	data->thread = malloc(sizeof(t_thread) * 2);
 	if (!data->thread)
 		return (1);
-	data->death_mutex = malloc(sizeof(pthread_mutex_t) * 2);
-	if (!data->death_mutex)
+	data->death = 0;
+	if (pthread_mutex_init(&data->death_mutex, NULL))
 		return (1);
 	i = 0;
 	while (i < nr)
@@ -67,12 +62,9 @@ static int		init_threads(int nr, t_data *data)
 		data->thread[i].last_meal = 0;
 		data->thread[i].start_ms = data->start_ms;
 		data->thread[i].time_to_die = 150;
-		data->thread[i].dead = 0;
 		data->thread[i].data = (t_data *)data;
-		if (pthread_mutex_init(&data->death_mutex[i], NULL) || 
-		pthread_mutex_init(&data->thread[i].thread_mutex, NULL))
+		if (pthread_mutex_init(&data->thread[i].thread_mutex, NULL))
 			return (1);
-		printf("\033[35mINIT address mutex thread %i: %p\n\033[0m", i + 1, &data->death_mutex[i]);
 		i++;
 	}
 	return (0);
@@ -91,6 +83,12 @@ static int	spawn_threads(t_data *data)
 		usleep(200);
 		i++;
 	}
+	// i = 0;
+	// while (i < 2)
+	// {
+	// 	pthread_join(data->thread[i].tid, NULL);
+	// 	i++;
+	// }
 	return (0);
 }
 

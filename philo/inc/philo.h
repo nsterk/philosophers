@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 15:19:35 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/19 18:22:44 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_thread
 	long long		start_ms;
 	int				time_to_die;
 	pthread_mutex_t	thread_mutex;
-	int				dead;
 	void			*data;
 }				t_thread;
 
@@ -41,14 +40,15 @@ typedef struct s_data
 	struct timeval	start;
 	t_thread		*thread;
 	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	*death_mutex;
+	pthread_mutex_t	death_mutex;
+	int				death;
 	long long		start_ms;
 	int				time_to_die;
 	int				i;
 }				t_data;
 
 long long	get_timestamp(struct timeval time);
-void		check_fatalities(t_data *data);
+void		*check_fatalities(void *arg);
 void		log_message(t_thread *thread, long timestamp, int state);
 
 #endif
