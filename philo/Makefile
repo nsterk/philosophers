@@ -6,14 +6,14 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/04/16 14:48:00 by nsterk        ########   odam.nl          #
+#    Updated: 2022/04/19 19:51:32 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo
 CC		=	cc
-FLAGS	=	 -g -fsanitize=thread
-LIBS	=	-Iinc -pthread
+FLAGS	=	 -g
+LIBS	=	-Iinc -pthread -fsanitize=address -g
 SRCS	=	srcs/main.c srcs/utils.c
 OBJS	=	$(SRCS:%.c=%.o)
 

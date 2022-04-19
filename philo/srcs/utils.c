@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 18:23:00 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/19 19:15:32 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	*check_fatalities(void *arg)
 {
 	t_data	*data;
 
-	while (1)
+	data = (t_data *)arg;
+	pthread_mutex_lock(&data->death_mutex);
+	while (!data->death)
 	{
-		pthread_mutex_lock(&data->death_mutex);
-		if (data->death)
-			return (NULL);
 		pthread_mutex_unlock(&data->death_mutex);
+		pthread_mutex_lock(&data->death_mutex);
 	}
-		printed = 1;
+	pthread_mutex_unlock(&data->death_mutex);
 	return (NULL);
 }
 

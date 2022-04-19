@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 18:22:44 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/19 18:57:29 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_thread
 	long			last_meal;
 	long long		start_ms;
 	int				time_to_die;
+	int				times_eaten;
 	pthread_mutex_t	thread_mutex;
 	void			*data;
 }				t_thread;
@@ -39,6 +40,7 @@ typedef struct s_data
 {
 	struct timeval	start;
 	t_thread		*thread;
+	pthread_t		monitor;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
 	int				death;
