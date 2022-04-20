@@ -6,58 +6,14 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 15:33:28 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 16:24:09 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+#include <stdlib.h>
 
-static void	*do_stuff(void *arg)
-{
-	t_thread *thread	= (t_thread *)arg;
-	t_data *data		= (t_data *)thread->data;
-	struct timeval end;
-	
-	if (!thread->id % 2)
-		usleep(1000);
-	while (1)
-	{
-		if (!thread->times_eaten)
-			{
-				log_message(thread, get_timestamp(thread->start_ms), STATE_EAT);
-				thread->times_eaten++;
-				usleep(100000);
-			}
-		else
-		{
-			log_message(thread, get_timestamp(thread->start_ms), STATE_DEAD);
-			break ;
-		}
-	}
-	return (NULL);
-}
-
-static int	spawn_threads(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < 2)
-	{
-		if (pthread_create(&data->thread[i].tid, NULL, do_stuff, &data->thread[i]))
-			return (1);
-		i++;
-	}
-	i = 0;
-	while (i < data->nr_philos)
-	{
-		pthread_join(data->thread[i].tid, NULL);
-		i++;
-	}
-	return (0);
-}
-
-static int	get_arguments(t_data *data, char **argv, int argc)
+static int	init_data(t_data *data, char **argv, int argc)
 {
 	data->nr_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
@@ -70,6 +26,11 @@ static int	get_arguments(t_data *data, char **argv, int argc)
 	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
 		|| data->time_to_sleep < 0 || data->to_eat < 0)
 		return (1);
+	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
+	if (!data->thread || !data->forks)
+		return (1);
+	data->start_ms = get_timestamp(0);
 	return (0);
 }
 
@@ -82,12 +43,10 @@ int	main(int argc, char **argv)
 		printf("Incorrect nr of arguments provided\n");
 		return (0);
 	}
-	if (get_arguments(&data, argv, argc))
+	if (init_data(&data, argv, argc))
+	{
+		printf("woopsie poopsie in init_data\n");
 		return (0);
-	printf("nr_philosophers: %d\ntime_to_die: %d\ntime_to_eat: %d\ntime_to_sleep: %d\nto_eat: %d\n", data.nr_philos,
-		data.time_to_die, data.time_to_eat, data.time_to_sleep, data.to_eat);
-	// init_threads(2, &data);
-	// pthread_mutex_init(&data.write_mutex, NULL);
-	// spawn_threads(&data);
+	}
 	return (0);
 }

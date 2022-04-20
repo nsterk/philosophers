@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 15:39:29 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 16:09:46 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,25 @@ void	*do_stuff(void *arg)
 		}
 	}
 	return (NULL);
+}
+
+int	spawn_threads(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < 2)
+	{
+		if (pthread_create(&data->thread[i].tid, NULL,
+				do_stuff, &data->thread[i]))
+			return (1);
+		i++;
+	}
+	i = 0;
+	while (i < data->nr_philos)
+	{
+		pthread_join(data->thread[i].tid, NULL);
+		i++;
+	}
+	return (0);
 }

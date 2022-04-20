@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 15:41:05 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 16:23:53 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,21 @@
 typedef struct s_thread
 {
 	pthread_t		tid;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	int				id;
 	long			last_meal;
-	long long		start_ms;
 	int				time_to_die;
 	int				times_eaten;
-	pthread_mutex_t	thread_mutex;
 	void			*data;
 }				t_thread;
 
 typedef struct s_data
 {
-	struct timeval	start;
 	t_thread		*thread;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	*forks;
+	long long		start_ms;
 	int				nr_philos;
 	int				time_to_die;
 	int				time_to_eat;
@@ -50,7 +50,8 @@ typedef struct s_data
 }				t_data;
 
 // thread functions
-int			init_threads(int nr, t_data *data);
+int			init_threads(t_data *data);
+int			spawn_threads(t_data *data);
 void		*do_stuff(void *arg);
 void		*check_fatalities(void *arg);
 
@@ -59,5 +60,8 @@ int			ft_atoi(const char *str);
 const char	*ft_skipspace(const char *str);
 long long	get_timestamp(long long start_ms);
 void		log_message(t_thread *thread, long timestamp, int state);
+
+// Test
+void	print_info(t_data *data);
 
 #endif
