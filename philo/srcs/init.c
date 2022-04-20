@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 14:27:23 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 14:58:27 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ int	init_threads(int nr, t_data *data)
 	start_ms = get_timestamp(0);
 	data->thread = malloc(sizeof(t_thread) * 2);
 	if (!data->thread)
-		return (1);
-	data->death = 0;
-	if (pthread_mutex_init(&data->death_mutex, NULL))
-		return (1);
 	i = 0;
 	while (i < nr)
 	{
