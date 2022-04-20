@@ -6,11 +6,11 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 16:09:46 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 19:07:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo.>
+#include <philo.h>
 
 void	*do_stuff(void *arg)
 {
@@ -20,22 +20,35 @@ void	*do_stuff(void *arg)
 	thread = (t_thread *)arg;
 	data = (t_data *)thread->data;
 	if (!thread->id % 2)
-		usleep(1000);
+		usleep(100);
 	while (1)
 	{
-		if (!thread->times_eaten)
+		if (thread->times_eaten < data->to_eat)
 		{
-			log_message(thread, get_timestamp(thread->start_ms), STATE_EAT);
-			thread->times_eaten++;
-			usleep(100000);
+			eat(thread, data);
+			log_message(thread, get_timestamp(data->start_ms), STATE_SLEEP);
+			usleep(data->time_to_sleep * 1000);
 		}
 		else
 		{
-			log_message(thread, get_timestamp(thread->start_ms), STATE_DEAD);
+			log_message(thread, get_timestamp(data->start_ms), STATE_DEAD);
 			break ;
 		}
 	}
 	return (NULL);
+}
+
+void	eat(t_thread *thread, t_data *data)
+{
+	pthread_mutex_lock(thread->left_fork);
+	pthread_mutex_lock(thread->right_fork);
+	thread->last_meal = get_timestamp(data->start_ms);
+	log_message(thread, thread->last_meal, STATE_EAT);
+	usleep(data->time_to_eat * 1000);
+	pthread_mutex_unlock(thread->left_fork);
+	pthread_mutex_unlock(thread->right_fork);
+	thread->times_eaten++;
+	return ;
 }
 
 int	spawn_threads(t_data *data)
@@ -43,7 +56,7 @@ int	spawn_threads(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < 2)
+	while (i < data->nr_philos)
 	{
 		if (pthread_create(&data->thread[i].tid, NULL,
 				do_stuff, &data->thread[i]))

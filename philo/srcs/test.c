@@ -10,3 +10,15 @@ void	print_info(t_data *data)
 	printf("ms elapsed since sleep: %lld\n", get_timestamp(data->start_ms));
 	return ;
 }
+
+void	print_fork_addresses(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->nr_philos)
+	{
+		printf("thread %d\nleft fork: %p	right fork: %p\n", data->thread[i].id, data->thread[i].left_fork, data->thread[i].right_fork);
+		i++;
+	}
+}

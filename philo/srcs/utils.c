@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 14:59:38 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 19:09:25 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,12 @@ void	log_message(t_thread *thread, long timestamp, int state)
 	t_data	*data;
 
 	data = (t_data *)thread->data;
-	thread->last_meal = timestamp;
 	pthread_mutex_lock(&data->write_mutex);
 	if (state == STATE_EAT)
 		printf("%ld %i is eating\n", timestamp, thread->id);
 	else if (state == STATE_DEAD)
 		printf("%ld %i has died\n", timestamp, thread->id);
+	else if (state == STATE_SLEEP)
+		printf("%ld %i is sleeping\n", timestamp, thread->id);
 	pthread_mutex_unlock(&data->write_mutex);
 }

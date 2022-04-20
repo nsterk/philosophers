@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 16:23:53 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 18:24:01 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,14 @@ typedef struct s_data
 	int				to_eat;
 }				t_data;
 
+//init
+int			init_data(t_data *data, char **argv, int argc);
+
 // thread functions
-int			init_threads(t_data *data);
+// int			init_threads(t_data *data);
 int			spawn_threads(t_data *data);
 void		*do_stuff(void *arg);
+void		eat(t_thread *thread, t_data *data);
 void		*check_fatalities(void *arg);
 
 // utils
@@ -62,6 +66,7 @@ long long	get_timestamp(long long start_ms);
 void		log_message(t_thread *thread, long timestamp, int state);
 
 // Test
-void	print_info(t_data *data);
+void		print_info(t_data *data);
+void		print_fork_addresses(t_data *data);
 
 #endif
