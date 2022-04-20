@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 18:24:01 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 20:06:29 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
-# include <sys/time.h> 
+# include <sys/time.h>
 
 # define STATE_EAT		0
 # define STATE_SLEEP	1

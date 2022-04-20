@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 19:07:55 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 20:09:56 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*do_stuff(void *arg)
 		usleep(100);
 	while (1)
 	{
-		if (thread->times_eaten < data->to_eat)
+		if ((get_timestamp(data->start_ms) - thread->last_meal) <= data->time_to_die)
 		{
 			eat(thread, data);
 			log_message(thread, get_timestamp(data->start_ms), STATE_SLEEP);

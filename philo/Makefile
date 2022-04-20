@@ -6,13 +6,13 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/04/20 19:37:21 by nsterk        ########   odam.nl          #
+#    Updated: 2022/04/20 20:08:37 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo
 CC		=	cc
-FLAGS	=	-g
+FLAGS	=	-Wall -Wextra -Werror
 LIBS	=	-Iinc -pthread
 SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/test.c srcs/threads.c
 OBJS	=	$(SRCS:%.c=%.o)
