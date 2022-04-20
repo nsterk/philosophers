@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 20:06:29 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 20:40:20 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				to_eat;
+	int				death;
 }				t_data;
 
 //init
@@ -63,7 +64,7 @@ void		*check_fatalities(void *arg);
 int			ft_atoi(const char *str);
 const char	*ft_skipspace(const char *str);
 long long	get_timestamp(long long start_ms);
-void		log_message(t_thread *thread, long timestamp, int state);
+void		log_message(t_thread *thread, int state);
 
 // Test
 void		print_info(t_data *data);

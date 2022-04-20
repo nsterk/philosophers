@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 20:09:56 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 21:49:44 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ void	*do_stuff(void *arg)
 		if ((get_timestamp(data->start_ms) - thread->last_meal) <= data->time_to_die)
 		{
 			eat(thread, data);
-			log_message(thread, get_timestamp(data->start_ms), STATE_SLEEP);
+			log_message(thread, STATE_SLEEP);
 			usleep(data->time_to_sleep * 1000);
+			log_message(thread, STATE_THINK);
 		}
 		else
 		{
-			log_message(thread, get_timestamp(data->start_ms), STATE_DEAD);
+			log_message(thread, STATE_DEAD);
 			break ;
 		}
 	}
@@ -42,8 +43,7 @@ void	eat(t_thread *thread, t_data *data)
 {
 	pthread_mutex_lock(thread->left_fork);
 	pthread_mutex_lock(thread->right_fork);
-	thread->last_meal = get_timestamp(data->start_ms);
-	log_message(thread, thread->last_meal, STATE_EAT);
+	log_message(thread, STATE_EAT);
 	usleep(data->time_to_eat * 1000);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
@@ -54,6 +54,7 @@ void	eat(t_thread *thread, t_data *data)
 int	spawn_threads(t_data *data)
 {
 	int	i;
+	int	ret;
 
 	i = 0;
 	while (i < data->nr_philos)
@@ -63,10 +64,12 @@ int	spawn_threads(t_data *data)
 			return (1);
 		i++;
 	}
+	ret = 1;
 	i = 0;
-	while (i < data->nr_philos)
+	while (i < data->nr_philos && ret)
 	{
-		pthread_join(data->thread[i].tid, NULL);
+		ret = pthread_join(data->thread[i].tid, NULL);
+		printf("ret thread %d: %d\n", data->thread[i].id, ret);
 		i++;
 	}
 	return (0);
