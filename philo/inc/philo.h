@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 13:52:02 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 14:26:49 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,12 @@ typedef struct s_data
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
 	int				death;
-	long long		start_ms;
 	int				time_to_die;
-	int				i;
 }				t_data;
 
 long long	get_timestamp(long long start_ms);
 void		*check_fatalities(void *arg);
 void		log_message(t_thread *thread, long timestamp, int state);
+int			init_threads(int nr, t_data *data);
 
 #endif
