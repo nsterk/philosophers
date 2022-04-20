@@ -6,15 +6,20 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 19:15:32 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 13:51:52 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-long long	get_timestamp(struct timeval time)
+long long	get_timestamp(long long start_ms)
 {
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	struct timeval	current;
+	long long		current_ms;
+
+	gettimeofday(&current, NULL);
+	current_ms = (current.tv_sec * 1000) + (current.tv_usec / 1000);
+	return (current_ms - start_ms);
 }
 
 void	*check_fatalities(void *arg)

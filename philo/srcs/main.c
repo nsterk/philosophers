@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/19 19:54:40 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/20 13:55:31 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static void	*do_stuff(void *arg)
 {
 	t_thread *thread	= (t_thread *)arg;
 	t_data *data		= (t_data *)thread->data;
-	struct timeval end;
+	// struct timeval end;
 	
 	if (!thread->id % 2)
 		usleep(1000);
 	while (1)
 	{
-		gettimeofday(&end, NULL);
+		// gettimeofday(&end, NULL);
 		pthread_mutex_lock(&data->death_mutex);
 		if (data->death)
 		{
@@ -31,10 +31,9 @@ static void	*do_stuff(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&data->death_mutex);
-		// pthread_mutex_lock(&thread->thread_mutex);
 		if (!thread->times_eaten)
 			{
-				log_message(thread, get_timestamp(end) - thread->start_ms, STATE_EAT);
+				log_message(thread, get_timestamp(thread->start_ms), STATE_EAT);
 				thread->times_eaten++;
 				usleep(100000);
 			}
@@ -48,10 +47,9 @@ static void	*do_stuff(void *arg)
 			}
 			data->death = 1;
 			pthread_mutex_unlock(&data->death_mutex);
-			log_message(thread, get_timestamp(end) - thread->start_ms, STATE_DEAD);
+			log_message(thread, get_timestamp(thread->start_ms), STATE_DEAD);
 			return (NULL);
 		}
-		// pthread_mutex_unlock(&thread->thread_mutex);
 	}
 	return (NULL);
 }
@@ -62,7 +60,7 @@ static int		init_threads(int nr, t_data *data)
 	long long	start_ms;
 
 	gettimeofday(&data->start, NULL);
-	start_ms = get_timestamp(data->start);
+	start_ms = get_timestamp(0);
 	data->thread = malloc(sizeof(t_thread) * 2);
 	if (!data->thread)
 		return (1);
@@ -100,12 +98,6 @@ static int	spawn_threads(t_data *data)
 	if (pthread_create(&data->monitor, NULL, check_fatalities, data))
 			return (1);
 	pthread_join(data->monitor, NULL);
-	// i = 0;
-	// while (i < 2)
-	// {
-	// 	pthread_join(data->thread[i].tid, NULL);
-	// 	i++;
-	// }
 	return (0);
 }
 
