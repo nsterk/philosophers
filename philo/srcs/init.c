@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 17:03:02 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/21 03:40:26 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int	init_threads(t_data *data)
 		data->thread[i].last_meal = 0;
 		data->thread[i].data = (t_data *)data;
 		data->thread[i].times_eaten = 0;
+		data->death = 0;
 		i++;
 	}
 	return (0);
