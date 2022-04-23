@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 14:48:05 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 18:50:21 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	ft_atoi(const char *str)
 	return (num * negative);
 }
 
-long long	get_timestamp(long long start_ms)
+unsigned long	get_timestamp(unsigned long start_ms)
 {
 	struct timeval	current;
-	long long		current_ms;
+	unsigned long	current_ms;
 
 	gettimeofday(&current, NULL);
 	current_ms = (current.tv_sec * 1000) + (current.tv_usec / 1000);
@@ -71,30 +71,28 @@ void	*check_fatalities(void *arg)
 	return (NULL);
 }
 
-void	log_message(t_thread *thread, int state)
+unsigned long	log_message(t_thread *thread, int state)
 {
-	t_data		*data;
-	long long	timestamp;
+	t_data			*data;
+	unsigned long	timestamp;
 
 	data = (t_data *)thread->data;
 	if (data->death)
-		return ;
+		return (0);
 	pthread_mutex_lock(&data->write_mutex);
-	timestamp = get_timestamp(data->start_ms);
-	if (state == STATE_EAT)
-	{
-		printf("%lld %i is eating\n", timestamp, thread->id);
-		thread->last_meal = timestamp;
-	}
-	else if (state == STATE_DEAD)
+	timestamp = get_timestamp(data->start);
+	if (state == EATING)
+		printf("%lu %i is eating\n", timestamp, thread->id);
+	else if (state == DEAD)
 	{
 		data->death = 1;
-		printf("%lld %i has died\n", timestamp, thread->id);
-		return ;
+		printf("%lu %i died\n", timestamp, thread->id);
+		return (timestamp);
 	}
-	else if (state == STATE_SLEEP)
-		printf("%lld %i is sleeping\n", timestamp, thread->id);
-	else if (state == STATE_THINK)
-		printf("%lld %i is thinking\n", timestamp, thread->id);
+	else if (state == SLEEPING)
+		printf("%lu %i is sleeping\n", timestamp, thread->id);
+	else if (state == THINKING)
+		printf("%lu %i is thinking\n", timestamp, thread->id);
 	pthread_mutex_unlock(&data->write_mutex);
+	return (timestamp);
 }

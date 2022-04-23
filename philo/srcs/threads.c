@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 16:07:41 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 18:49:50 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 
 void	be_busy(t_thread *thread, long long start_ms)
 {
-	long long	current_time;
-
-	current_time = get_timestamp(start_ms);
-	while (current_time < thread->continue_time)
-		current_time = get_timestamp(start_ms);
+	while (get_timestamp(start_ms) < thread->resume)
+		usleep(100);
 	thread->state = FREE;
 }
 
 void	*do_stuff(void *arg)
 {
-	t_thread	*thread;	
+	t_thread	*thread;
 	t_data		*data;
 
 	thread = (t_thread *)arg;
@@ -35,17 +32,18 @@ void	*do_stuff(void *arg)
 	{
 		if (data->death)
 			return (NULL);
-		if ((get_timestamp(data->start_ms) - thread->last_meal) <= data->time_to_die)
+		if ((int)(get_timestamp(data->start) - thread->last_meal) <= data->time_to_die)
 		{
 			eat(thread, data);
-			log_message(thread, STATE_SLEEP);
-			usleep(data->time_to_sleep * 1000);
-			log_message(thread, STATE_THINK);
+			log_message(thread, SLEEPING);
+			be_busy(thread, data->start);
+			log_message(thread, THINKING);
 		}
 		else
 		{
-			usleep((get_timestamp(data->start_ms) - thread->last_meal) * 1000);
-			log_message(thread, STATE_DEAD);
+			thread->resume = thread->last_meal + data->time_to_die;
+			be_busy(thread, data->start);
+			log_message(thread, DEAD);
 			break ;
 		}
 	}
@@ -55,9 +53,12 @@ void	*do_stuff(void *arg)
 void	eat(t_thread *thread, t_data *data)
 {
 	pthread_mutex_lock(thread->left_fork);
+	log_message(thread, FORK);
 	pthread_mutex_lock(thread->right_fork);
-	log_message(thread, STATE_EAT);
-	usleep(data->time_to_eat * 1000);
+	log_message(thread, FORK);
+	log_message(thread, EATING);
+	thread->resume = thread->last_meal + data->time_to_eat;
+	be_busy(thread, data->start);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
 	thread->times_eaten++;
@@ -95,7 +96,7 @@ int	spawn_threads(t_data *data)
 	while (i < data->nr_philos)
 	{
 		if (pthread_create(&data->thread[i].tid, NULL,
-				do_stuff, &data->thread[i]))
+				do_new_stuff, &data->thread[i]))
 			return (1);
 		pthread_detach(data->thread[i].tid);
 		i++;

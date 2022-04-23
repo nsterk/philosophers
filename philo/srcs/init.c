@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/21 03:40:26 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 18:12:25 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ static int	init_threads(t_data *data)
 	{
 		data->thread[i].id = i + 1;
 		data->thread[i].last_meal = 0;
+		data->thread[i].tod = data->time_to_die;
+		data->thread[i].state = FREE;
+		data->thread[i].hungry = 1;
 		data->thread[i].data = (t_data *)data;
 		data->thread[i].times_eaten = 0;
 		data->death = 0;
@@ -68,7 +71,7 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
 	if (!data->thread || !data->forks)
 		return (1);
-	data->start_ms = get_timestamp(0);
+	data->start = get_timestamp(0);
 	init_threads(data);
 	init_mutexes(data);
 	return (0);
