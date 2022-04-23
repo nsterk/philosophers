@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 20:40:20 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 16:05:46 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-# define STATE_EAT		0
-# define STATE_SLEEP	1
-# define STATE_THINK	2
-# define STATE_DEAD		3
+# define FREE			0
+# define EATING			1
+# define SLEEPING		2
+# define THINKING		3
+# define DEAD			4
 
 typedef struct s_thread
 {
@@ -30,7 +31,10 @@ typedef struct s_thread
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				id;
+	int				state;
+	int				hungry;
 	long			last_meal;
+	long			continue_time;
 	int				time_to_die;
 	int				times_eaten;
 	void			*data;

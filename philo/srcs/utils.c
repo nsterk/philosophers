@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/21 14:53:36 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 14:48:05 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ long long	get_timestamp(long long start_ms)
 	return (current_ms - start_ms);
 }
 
-
 void	*check_fatalities(void *arg)
 {
 	t_data	*data;
@@ -71,7 +70,6 @@ void	*check_fatalities(void *arg)
 	}
 	return (NULL);
 }
-
 
 void	log_message(t_thread *thread, int state)
 {

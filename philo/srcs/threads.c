@@ -6,11 +6,21 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/21 03:47:33 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 16:07:41 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+void	be_busy(t_thread *thread, long long start_ms)
+{
+	long long	current_time;
+
+	current_time = get_timestamp(start_ms);
+	while (current_time < thread->continue_time)
+		current_time = get_timestamp(start_ms);
+	thread->state = FREE;
+}
 
 void	*do_stuff(void *arg)
 {
@@ -34,6 +44,7 @@ void	*do_stuff(void *arg)
 		}
 		else
 		{
+			usleep((get_timestamp(data->start_ms) - thread->last_meal) * 1000);
 			log_message(thread, STATE_DEAD);
 			break ;
 		}
@@ -53,6 +64,27 @@ void	eat(t_thread *thread, t_data *data)
 	return ;
 }
 
+/*
+AVOID USLEEP by setting thread to busy and free. redesign the routine
+
+if (state == FREE)
+	if (get_timestamp >= thread->continue_time)
+		state = free
+else
+	if (hungry && enough time)
+	{
+		log eat --> daarin kan continue time = timestamp + time_to_eat
+		state = busy
+		hungry = 0
+		last_meal = timestamp
+	}
+	else if (enough time)
+	{
+		log sleep --> daarin kan continue time = timestamp + time_to_sleep
+		state = busy
+		hungry = 1
+	}
+ */
 int	spawn_threads(t_data *data)
 {
 	int			i;
