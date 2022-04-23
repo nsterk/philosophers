@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 20:31:59 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 20:43:31 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,6 @@ unsigned long	get_timestamp(unsigned long start_ms)
 	return (current_ms - start_ms);
 }
 
-void	*check_fatalities(void *arg)
-{
-	t_data	*data;
-
-	data = (t_data *)arg;
-	while (1)
-	{
-		if (data->death)
-			return (NULL);
-	}
-	return (NULL);
-}
-
 unsigned long	log_message(t_thread *thread, int state)
 {
 	t_data			*data;
@@ -81,7 +68,9 @@ unsigned long	log_message(t_thread *thread, int state)
 	if (data->death)
 		return (0);
 	timestamp = get_timestamp(data->start);
-	if (state == EATING)
+	if (state == FORK)
+		printf("%lu %i has taken a fork\n", timestamp, thread->id);
+	else if (state == EATING)
 		printf("%lu %i is eating\n", timestamp, thread->id);
 	else if (state == DEAD)
 	{

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 19:02:10 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 20:41:37 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,13 @@ int				init_data(t_data *data, char **argv, int argc);
 // int			init_threads(t_data *data);
 int				spawn_threads(t_data *data);
 void			*do_stuff(void *arg);
-void			eat(t_thread *thread, t_data *data);
 void			*check_fatalities(void *arg);
 
-void			*do_new_stuff(void *arg);
-void			be_busy(t_thread *thread, long long start_ms);
-void			do_eating(t_thread *thread, t_data *data);
-void			do_sleeping(t_thread *thread, t_data *data);
-void			do_thinking(t_thread *thread, t_data *data);
-void			*do_dying(t_thread *thread, t_data *data);
+void			do_wait(t_thread *thread, long long start_ms);
+void			do_eat(t_thread *thread, t_data *data);
+void			do_sleep(t_thread *thread, t_data *data);
+void			do_think(t_thread *thread, t_data *data);
+void			*do_die(t_thread *thread, t_data *data);
 
 // utils
 int				ft_atoi(const char *str);
