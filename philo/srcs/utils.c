@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 18:50:21 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 20:31:59 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ unsigned long	log_message(t_thread *thread, int state)
 	unsigned long	timestamp;
 
 	data = (t_data *)thread->data;
+	pthread_mutex_lock(&data->write_mutex);
 	if (data->death)
 		return (0);
-	pthread_mutex_lock(&data->write_mutex);
 	timestamp = get_timestamp(data->start);
 	if (state == EATING)
 		printf("%lu %i is eating\n", timestamp, thread->id);

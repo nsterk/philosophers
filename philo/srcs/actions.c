@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 20:16:08 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 20:30:44 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	*do_dying(t_thread *thread, t_data *data)
 {
 	thread->resume = thread->tod;
 	be_busy(thread, data->start);
-	log_message(thread, DEAD);
+	if (!data->death)
+		log_message(thread, DEAD);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 18:49:50 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/23 20:21:25 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	be_busy(t_thread *thread, long long start_ms)
 {
 	while (get_timestamp(start_ms) < thread->resume)
-		usleep(100);
+		usleep(50);
 	thread->state = FREE;
 }
 
