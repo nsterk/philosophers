@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 20:41:37 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/26 21:04:00 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 # include <sys/time.h>
 
 # define FREE			0
-# define FORK			1
-# define EATING			2
-# define SLEEPING		3
-# define THINKING		4
-# define DEAD			5
+# define FORK1			1
+# define FORK2			2
+# define EATING			3
+# define SLEEPING		4
+# define THINKING		5
+# define DEAD			6
 
 typedef struct s_thread
 {
@@ -32,14 +33,14 @@ typedef struct s_thread
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				id;
-	int				state;
-	int				hungry;
 	unsigned long	last_meal;
 	unsigned long	resume;
 	unsigned long	tod;
+	unsigned long	timestamp;
 	int				time_to_die;
 	int				times_eaten;
 	void			*data;
+	int				death;
 }				t_thread;
 
 typedef struct s_data
@@ -47,13 +48,14 @@ typedef struct s_data
 	t_thread		*thread;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	death_mutex;
 	unsigned long	start;
 	int				nr_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				to_eat;
-	int				death;
+	// int				death;
 }				t_data;
 
 //init
@@ -71,11 +73,17 @@ void			do_sleep(t_thread *thread, t_data *data);
 void			do_think(t_thread *thread, t_data *data);
 void			*do_die(t_thread *thread, t_data *data);
 
+void			log_fork(t_thread *thread, t_data *data);
+void			log_eat(t_thread *thread, t_data *data);
+void			log_sleep(t_thread *thread, t_data *data);
+void			log_think(t_thread *thread, t_data *data);
+
 // utils
 int				ft_atoi(const char *str);
 const char		*ft_skipspace(const char *str);
 unsigned long	get_timestamp(unsigned long start_ms);
 unsigned long	log_message(t_thread *thread, int state);
+int				someone_dead(t_data *data);
 
 // Test
 void			print_info(t_data *data);

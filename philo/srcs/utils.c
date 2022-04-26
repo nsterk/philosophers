@@ -6,11 +6,23 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 20:43:31 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/26 19:19:24 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+int	someone_dead(t_data *data)
+{
+	int	death;
+
+	death = 0;
+	pthread_mutex_lock(&data->death_mutex);
+	if (data->death)
+		death = 1;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (death);
+}
 
 const char	*ft_skipspace(const char *str)
 {
@@ -64,24 +76,51 @@ unsigned long	log_message(t_thread *thread, int state)
 	unsigned long	timestamp;
 
 	data = (t_data *)thread->data;
-	pthread_mutex_lock(&data->write_mutex);
-	if (data->death)
+	if (someone_dead(data))
 		return (0);
+	pthread_mutex_lock(&data->write_mutex);
 	timestamp = get_timestamp(data->start);
-	if (state == FORK)
+	if (state == FORK1)
 		printf("%lu %i has taken a fork\n", timestamp, thread->id);
+	else if (state == FORK2)
+	{
+		printf("%lu %i has taken a fork\n", timestamp, thread->id);
+		printf("%lu %i is eating\n", timestamp, thread->id);
+	}
 	else if (state == EATING)
 		printf("%lu %i is eating\n", timestamp, thread->id);
-	else if (state == DEAD)
-	{
-		data->death = 1;
-		printf("%lu %i died\n", timestamp, thread->id);
-		return (timestamp);
-	}
 	else if (state == SLEEPING)
 		printf("%lu %i is sleeping\n", timestamp, thread->id);
 	else if (state == THINKING)
-		printf("%lu %i is thinking\n", timestamp, thread->id);
+	{
+		if (get_timestamp(data->start) < thread->tod)
+			printf("%lu %i is thinking\n", timestamp, thread->id);
+	}
 	pthread_mutex_unlock(&data->write_mutex);
 	return (timestamp);
 }
+
+// unsigned long	log_message(t_thread *thread, int state)
+// {
+// 	t_data			*data;
+// 	unsigned long	timestamp;
+
+// 	data = (t_data *)thread->data;
+// 	pthread_mutex_lock(&data->write_mutex);
+// 	if (someone_dead(data))
+// 		return (0);
+// 	timestamp = get_timestamp(data->start);
+// 	if (state == FORK)
+// 		printf("%lu %i has taken a fork\n", timestamp, thread->id);
+// 	else if (state == EATING)
+// 		printf("%lu %i is eating\n", timestamp, thread->id);
+// 	else if (state == SLEEPING)
+// 		printf("%lu %i is sleeping\n", timestamp, thread->id);
+// 	else if (state == THINKING)
+// 	{
+// 		if (get_timestamp(data->start) < thread->tod)
+// 			printf("%lu %i is thinking\n", timestamp, thread->id);
+// 	}
+// 	pthread_mutex_unlock(&data->write_mutex);
+// 	return (timestamp);
+// }

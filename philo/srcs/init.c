@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/23 18:12:25 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/26 20:24:33 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@ static int	init_mutexes(t_data *data)
 		if (pthread_mutex_init(&data->forks[i], NULL))
 			return (1);
 		if (!i)
-			data->thread[i].left_fork = &data->forks[data->nr_philos -1];
+			data->thread[i].left_fork = &data->forks[data->nr_philos - 1];
 		else
 			data->thread[i].left_fork = &data->forks[data->thread[i].id - 2];
 		data->thread[i].right_fork = &data->forks[data->thread[i].id - 1];
 		i++;
 	}
 	if (pthread_mutex_init(&data->write_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->death_mutex, NULL))
 		return (1);
 	return (0);
 }
@@ -44,11 +46,9 @@ static int	init_threads(t_data *data)
 		data->thread[i].id = i + 1;
 		data->thread[i].last_meal = 0;
 		data->thread[i].tod = data->time_to_die;
-		data->thread[i].state = FREE;
-		data->thread[i].hungry = 1;
 		data->thread[i].data = (t_data *)data;
 		data->thread[i].times_eaten = 0;
-		data->death = 0;
+		data->thread[i].timestamp = 0;
 		i++;
 	}
 	return (0);
@@ -67,6 +67,7 @@ int	init_data(t_data *data, char **argv, int argc)
 	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
 		|| data->time_to_sleep < 0 || data->to_eat < 0)
 		return (1);
+	data->death = 0;
 	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
 	if (!data->thread || !data->forks)

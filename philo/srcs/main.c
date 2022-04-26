@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/20 20:07:59 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/26 20:44:13 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,18 @@
 
 static void	free_memory(t_data *data)
 {
+	int	i;
+
 	free(data->forks);
 	free(data->thread);
+	pthread_mutex_destroy(&data->death_mutex);
+	pthread_mutex_destroy(&data->write_mutex);
+	i = 0;
+	while (i < data->nr_philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
 	return ;
 }
 
