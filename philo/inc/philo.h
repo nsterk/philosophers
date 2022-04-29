@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/26 21:04:00 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/27 13:10:24 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ typedef struct s_thread
 	pthread_t		tid;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	death_mutex;
 	int				id;
-	unsigned long	last_meal;
+	// unsigned long	last_meal;
 	unsigned long	resume;
 	unsigned long	tod;
 	unsigned long	timestamp;
-	int				time_to_die;
 	int				times_eaten;
 	void			*data;
 	int				death;
@@ -55,7 +55,7 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				to_eat;
-	// int				death;
+	int				death;
 }				t_data;
 
 //init

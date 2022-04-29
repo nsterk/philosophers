@@ -23,8 +23,8 @@ void	print_info(t_data *data)
 // 	}
 // }
 
-void	print_thefucking_times(t_thread *thread, unsigned long timestamp)
-{
-	printf("timestamp	id	last_meal 	resume	tod\n%lu		%d	%lu		%lu	%lu\n",
-		timestamp, thread->id, thread->resume, thread->last_meal, thread->tod);
-}
+// void	print_thefucking_times(t_thread *thread, unsigned long timestamp)
+// {
+// 	printf("timestamp	id	last_meal 	resume	tod\n%lu		%d	%lu		%lu	%lu\n",
+// 		timestamp, thread->id, thread->resume, thread->last_meal, thread->tod);
+// }
