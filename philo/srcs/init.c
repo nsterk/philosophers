@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/27 13:11:15 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 17:10:26 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@ static int	init_mutexes(t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL))
 			return (1);
-		if (pthread_mutex_init(&data->thread[i].death_mutex, NULL))
-			return (1);
+		// if (pthread_mutex_init(&data->status_m[i], NULL))
+		// 	return (1);
 		if (!i)
+		{
 			data->thread[i].left_fork = &data->forks[data->nr_philos - 1];
+		}
 		else
 			data->thread[i].left_fork = &data->forks[data->thread[i].id - 2];
 		data->thread[i].right_fork = &data->forks[data->thread[i].id - 1];
+		printf("fork %d: %p\n", i, &data->forks[i]);
 		i++;
 	}
 	if (pthread_mutex_init(&data->write_mutex, NULL))

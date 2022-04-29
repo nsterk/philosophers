@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/26 20:45:28 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 17:41:18 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	do_eat(t_thread *thread, t_data *data)
 	// time_of_meal = log_message(thread, EATING);
 	thread->resume = thread->timestamp + data->time_to_eat;
 	thread->tod = thread->timestamp + data->time_to_die;
-	do_wait(thread, data->start);
+	if (someone_dead(data) == 0)
+		do_wait(thread, data->start);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
 	thread->times_eaten++;
@@ -58,8 +59,11 @@ void	*do_die(t_thread *thread, t_data *data)
 		pthread_mutex_unlock(&data->death_mutex);
 		return (NULL);
 	}
-	data->death = 1;
-	pthread_mutex_unlock(&data->death_mutex);
+	else
+	{
+		data->death = 1;
+		pthread_mutex_unlock(&data->death_mutex);
+	}
 	pthread_mutex_lock(&data->write_mutex);
 	printf("%lu %i died\n", get_timestamp(data->start), thread->id);
 	pthread_mutex_unlock(&data->write_mutex);

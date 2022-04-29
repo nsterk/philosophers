@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/27 13:10:24 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 17:10:24 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ typedef struct s_thread
 	pthread_t		tid;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	death_mutex;
 	int				id;
 	// unsigned long	last_meal;
+	int				left_neighbour;
 	unsigned long	resume;
 	unsigned long	tod;
 	unsigned long	timestamp;
 	int				times_eaten;
 	void			*data;
-	int				death;
+	int				status;
 }				t_thread;
 
 typedef struct s_data
@@ -48,6 +48,7 @@ typedef struct s_data
 	t_thread		*thread;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*status_m;
 	pthread_mutex_t	death_mutex;
 	unsigned long	start;
 	int				nr_philos;
@@ -75,7 +76,7 @@ void			*do_die(t_thread *thread, t_data *data);
 
 void			log_fork(t_thread *thread, t_data *data);
 void			log_eat(t_thread *thread, t_data *data);
-void			log_sleep(t_thread *thread, t_data *data);
+int				log_sleep(t_thread *thread, t_data *data);
 void			log_think(t_thread *thread, t_data *data);
 
 // utils
