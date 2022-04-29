@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/26 18:30:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 16:00:50 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 19:12:17 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	log_eat(t_thread *thread, t_data *data)
 	pthread_mutex_unlock(&data->write_mutex);
 }
 
-int	log_sleep(t_thread *thread, t_data *data)
+int		log_sleep(t_thread *thread, t_data *data)
 {
 	pthread_mutex_lock(&data->write_mutex);
 	thread->timestamp = get_timestamp(data->start);
@@ -42,8 +42,8 @@ int	log_sleep(t_thread *thread, t_data *data)
 		printf("%lu %i is sleeping\n", thread->timestamp, thread->id);
 	pthread_mutex_unlock(&data->write_mutex);
 	thread->resume = thread->timestamp + data->time_to_sleep;
-	// if (someone_dead(data))
-	// 	return (1);
+	if (someone_dead(data))
+		return (1);
 	do_wait(thread, data->start);
 	return (0);
 }

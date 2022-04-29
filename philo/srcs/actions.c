@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 17:41:18 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 18:50:35 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,8 @@ void	do_eat(t_thread *thread, t_data *data)
 {
 	pthread_mutex_lock(thread->left_fork);
 	log_fork(thread, data);
-	// log_message(thread, FORK1);
 	pthread_mutex_lock(thread->right_fork);
 	log_eat(thread, data);
-	// thread->last_meal = thread->timestamp;
-	// thread->last_meal = log_message(thread, FORK2);
-	// time_of_meal = log_message(thread, EATING);
 	thread->resume = thread->timestamp + data->time_to_eat;
 	thread->tod = thread->timestamp + data->time_to_die;
 	if (someone_dead(data) == 0)
@@ -33,9 +29,6 @@ void	do_eat(t_thread *thread, t_data *data)
 
 void	do_sleep(t_thread *thread, t_data *data)
 {
-	// if ((get_timestamp(data->start) + data->time_to_sleep) >= thread->tod)
-	// 	return ;
-	// thread->resume = log_message(thread, SLEEPING) + data->time_to_sleep;
 	log_sleep(thread, data);
 	thread->resume = thread->timestamp + data->time_to_sleep;
 	do_wait(thread, data->start);
@@ -46,7 +39,6 @@ void	do_think(t_thread *thread, t_data *data)
 	if (get_timestamp(data->start) > thread->tod)
 		return ;
 	log_message(thread, THINKING);
-	// do_wait(thread, data->start);
 }
 
 void	*do_die(t_thread *thread, t_data *data)

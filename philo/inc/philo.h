@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 17:10:24 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 19:11:56 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int				init_data(t_data *data, char **argv, int argc);
 // int			init_threads(t_data *data);
 int				spawn_threads(t_data *data);
 void			*do_stuff(void *arg);
-void			*check_fatalities(void *arg);
 
 void			do_wait(t_thread *thread, long long start_ms);
 void			do_eat(t_thread *thread, t_data *data);
@@ -87,8 +86,8 @@ unsigned long	log_message(t_thread *thread, int state);
 int				someone_dead(t_data *data);
 
 // Test
-void			print_info(t_data *data);
-void			print_fork_addresses(t_data *data);
-void			print_thefucking_times(t_thread *thread, unsigned long timestamp);
+// void			print_info(t_data *data);
+// void			print_fork_addresses(t_data *data);
+// void			print_thefucking_times(t_thread *thread, unsigned long timestamp);
 
 #endif

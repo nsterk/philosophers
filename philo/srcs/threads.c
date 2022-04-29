@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 17:38:16 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/29 18:57:43 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	spawn_threads(t_data *data)
 {
 	int			i;
-	// pthread_t	monitor;
 
 	i = 0;
 	while (i < data->nr_philos)
@@ -23,13 +22,8 @@ int	spawn_threads(t_data *data)
 		if (pthread_create(&data->thread[i].tid, NULL,
 				do_stuff, &data->thread[i]))
 			return (1);
-		// pthread_detach(data->thread[i].tid);
-		// if (someone_dead(data))
-		// 	return (0);
 		i++;
 	}
-	// pthread_create(&monitor, NULL, check_fatalities, data);
-	// pthread_join(monitor, NULL);
 	i = 0;
 	while (i < data->nr_philos)
 	{
@@ -39,24 +33,6 @@ int	spawn_threads(t_data *data)
 	return (0);
 }
 
-// void	*monitor(void *arg)
-// {
-// 	t_thread	*thread;
-// 	t_data		*data;
-
-// 	thread = (t_thread *)arg;
-// 	data = (t_data *)thread->data;
-
-// 	while (1)
-// 	{
-// 		pthread_mutex_lock(&thread->death_mutex);
-// 		if (thread->tod >= get_timestamp(data->start))
-// 			thread->death = 1;
-// 		pthread_mutex_unlock(&thread->death_mutex);
-// 	}
-// 	return (NULL);
-// }
-
 void	*do_stuff(void *arg)
 {
 	t_thread	*thread;
@@ -64,7 +40,6 @@ void	*do_stuff(void *arg)
 
 	thread = (t_thread *)arg;
 	data = (t_data *)thread->data;
-	// create monitoring thread
 	if (!(thread->id % 2))
 		usleep(1000);
 	thread->tod = get_timestamp(data->start) + data->time_to_die;
@@ -77,26 +52,5 @@ void	*do_stuff(void *arg)
 			return (NULL);
 		log_think(thread, data);
 	}
-	// usleep(200);
-	// pthread_mutex_unlock(thread->left_fork);
-	// pthread_mutex_unlock(thread->right_fork);
 	return (NULL);
 }
-
-void	*check_fatalities(void *arg)
-{
-	t_data	*data;
-
-	data = (t_data *)arg;
-	while (1)
-	{
-		if (someone_dead(data))
-			break ;
-	}
-	return (NULL);
-}
-
-// void	*monitor_count(void *arg)
-// {
-	
-// }
