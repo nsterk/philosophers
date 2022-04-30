@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 16:33:44 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 18:15:19 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,12 @@ typedef struct s_data
 int				init_data(t_data *data, char **argv, int argc);
 
 // thread functions
-// int			init_threads(t_data *data);
-int				spawn_threads(t_data *data);
 void			*do_stuff(void *arg);
 
-void			do_wait(t_thread *thread, long long start_ms);
-void			eat(t_thread *thread, t_data *data);
+void			usleep_adj(t_thread *thread, long long start_ms);
 void			do_sleep(t_thread *thread, t_data *data);
-void			think(t_thread *thread, t_data *data);
-void			*die(t_thread *thread, t_data *data);
-
-void			log_fork(t_thread *thread, t_data *data);
-void			log_eat(t_thread *thread, t_data *data);
-int				log_sleep(t_thread *thread, t_data *data);
-void			log_think(t_thread *thread, t_data *data);
+void			do_eat(t_thread *thread, t_data *data);
+void			*do_die(t_thread *thread, t_data *data);
 
 // utils
 int				ft_atoi(const char *str);
