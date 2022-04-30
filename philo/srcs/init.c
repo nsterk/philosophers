@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 17:10:26 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 16:14:36 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	init_mutexes(t_data *data)
 		else
 			data->thread[i].left_fork = &data->forks[data->thread[i].id - 2];
 		data->thread[i].right_fork = &data->forks[data->thread[i].id - 1];
-		printf("fork %d: %p\n", i, &data->forks[i]);
 		i++;
 	}
 	if (pthread_mutex_init(&data->write_mutex, NULL))

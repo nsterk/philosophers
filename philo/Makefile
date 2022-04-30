@@ -6,16 +6,15 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/04/29 17:35:45 by nsterk        ########   odam.nl          #
+#    Updated: 2022/04/30 16:28:07 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo
 CC		=	cc
-FLAGS	=	-Wall -Wextra -Werror -g -fsanitize=thread
+FLAGS	=	-Wall -Wextra -Werror
 LIBS	=	-Iinc -pthread
-SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/test.c srcs/threads.c \
-			srcs/actions.c srcs/log_messages.c
+SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/threads.c srcs/actions.c 
 OBJS	=	$(SRCS:%.c=%.o)
 
 all:	$(NAME)

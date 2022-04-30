@@ -6,25 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/26 19:19:24 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 16:29:09 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int	someone_dead(t_data *data)
-{
-	int	death;
-
-	death = 0;
-	pthread_mutex_lock(&data->death_mutex);
-	if (data->death)
-		death = 1;
-	pthread_mutex_unlock(&data->death_mutex);
-	return (death);
-}
-
-const char	*ft_skipspace(const char *str)
+static const char	*ft_skipspace(const char *str)
 {
 	while (*str == '\t' || *str == '\n' || *str == '\f'
 		|| *str == '\r' || *str == '\v' || *str == ' ')
@@ -60,6 +48,18 @@ int	ft_atoi(const char *str)
 	return (num * negative);
 }
 
+int	someone_dead(t_data *data)
+{
+	int	death;
+
+	death = 0;
+	pthread_mutex_lock(&data->death_mutex);
+	if (data->death)
+		death = 1;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (death);
+}
+
 unsigned long	get_timestamp(unsigned long start_ms)
 {
 	struct timeval	current;
@@ -70,57 +70,27 @@ unsigned long	get_timestamp(unsigned long start_ms)
 	return (current_ms - start_ms);
 }
 
-unsigned long	log_message(t_thread *thread, int state)
+void	log_message(t_thread *thread, enum e_msg msg)
 {
-	t_data			*data;
-	unsigned long	timestamp;
+	t_data				*data;
+	static const char	*msgs[] = {
+		"has taken a fork",
+		"is eating",
+		"is sleeping",
+		"is thinking",
+		"died"
+	};
 
 	data = (t_data *)thread->data;
-	if (someone_dead(data))
-		return (0);
 	pthread_mutex_lock(&data->write_mutex);
-	timestamp = get_timestamp(data->start);
-	if (state == FORK1)
-		printf("%lu %i has taken a fork\n", timestamp, thread->id);
-	else if (state == FORK2)
+	thread->timestamp = get_timestamp(data->start);
+	if (!someone_dead(data))
+		printf("%lu %d %s\n", thread->timestamp, thread->id, msgs[msg]);
+	if (msg == e_die)
 	{
-		printf("%lu %i has taken a fork\n", timestamp, thread->id);
-		printf("%lu %i is eating\n", timestamp, thread->id);
-	}
-	else if (state == EATING)
-		printf("%lu %i is eating\n", timestamp, thread->id);
-	else if (state == SLEEPING)
-		printf("%lu %i is sleeping\n", timestamp, thread->id);
-	else if (state == THINKING)
-	{
-		if (get_timestamp(data->start) < thread->tod)
-			printf("%lu %i is thinking\n", timestamp, thread->id);
+		pthread_mutex_lock(&data->death_mutex);
+		data->death = 1;
+		pthread_mutex_unlock(&data->death_mutex);
 	}
 	pthread_mutex_unlock(&data->write_mutex);
-	return (timestamp);
 }
-
-// unsigned long	log_message(t_thread *thread, int state)
-// {
-// 	t_data			*data;
-// 	unsigned long	timestamp;
-
-// 	data = (t_data *)thread->data;
-// 	pthread_mutex_lock(&data->write_mutex);
-// 	if (someone_dead(data))
-// 		return (0);
-// 	timestamp = get_timestamp(data->start);
-// 	if (state == FORK)
-// 		printf("%lu %i has taken a fork\n", timestamp, thread->id);
-// 	else if (state == EATING)
-// 		printf("%lu %i is eating\n", timestamp, thread->id);
-// 	else if (state == SLEEPING)
-// 		printf("%lu %i is sleeping\n", timestamp, thread->id);
-// 	else if (state == THINKING)
-// 	{
-// 		if (get_timestamp(data->start) < thread->tod)
-// 			printf("%lu %i is thinking\n", timestamp, thread->id);
-// 	}
-// 	pthread_mutex_unlock(&data->write_mutex);
-// 	return (timestamp);
-// }

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 15:35:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/29 18:57:43 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 16:34:13 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ void	*do_stuff(void *arg)
 	while (someone_dead(data) == 0)
 	{
 		if (get_timestamp(data->start) >= thread->tod)
-			return (do_die(thread, data));
-		do_eat(thread, data);
-		if (log_sleep(thread, data))
-			return (NULL);
-		log_think(thread, data);
+			return (die(thread, data));
+		eat(thread, data);
+		do_sleep(thread, data);
+		think(thread, data);
 	}
 	return (NULL);
 }
