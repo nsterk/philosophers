@@ -6,11 +6,14 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:24:48 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 18:38:40 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void	log_message(t_thread *thread, enum e_msg msg)
 {
@@ -35,6 +38,12 @@ void	log_message(t_thread *thread, enum e_msg msg)
 		pthread_mutex_unlock(&data->death_mutex);
 	}
 	pthread_mutex_unlock(&data->write_mutex);
+}
+
+int	log_error(char *str)
+{
+	printf("%s\n", str);
+	return (0);
 }
 
 int	someone_dead(t_data *data)

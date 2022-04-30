@@ -6,11 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:24:38 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 19:07:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void	*do_stuff(void *arg)
 {
@@ -22,9 +24,30 @@ void	*do_stuff(void *arg)
 	if (!(thread->id % 2))
 		usleep(1000);
 	thread->tod = timestamp(data->start) + data->time_to_die;
-	while (someone_dead(data) == 0)
+	while (!someone_dead(data))
 	{
 		if (timestamp(data->start) >= thread->tod)
+			return (do_die(thread, data));
+		do_eat(thread, data);
+		do_sleep(thread, data);
+		log_message(thread, e_think);
+	}
+	return (NULL);
+}
+
+void	*do_stuff_count(void *arg)
+{
+	t_thread	*thread;
+	t_data		*data;
+
+	thread = (t_thread *)arg;
+	data = (t_data *)thread->data;
+	if (!(thread->id % 2))
+		usleep(1000);
+	thread->tod = timestamp(data->start) + data->time_to_die;
+	while (!someone_dead(data))
+	{
+		if (!(thread->to_eat) || timestamp(data->start) >= thread->tod)
 			return (do_die(thread, data));
 		do_eat(thread, data);
 		do_sleep(thread, data);
@@ -45,7 +68,7 @@ void	do_eat(t_thread *thread, t_data *data)
 	usleep_adj(thread, data->start);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
-	thread->times_eaten++;
+	thread->to_eat--;
 }
 
 void	do_sleep(t_thread *thread, t_data *data)
