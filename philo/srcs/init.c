@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:08:43 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 18:25:08 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
 	if (!data->thread || !data->forks)
 		return (1);
-	data->start = get_timestamp(0);
+	data->start = timestamp(0);
 	init_threads(data);
 	init_mutexes(data);
 	return (0);

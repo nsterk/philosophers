@@ -6,14 +6,14 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:15:14 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 18:21:24 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 #include <stdlib.h>
 
-static void	free_memory(t_data *data)
+static int	free_memory(t_data *data)
 {
 	int	i;
 
@@ -25,9 +25,11 @@ static void	free_memory(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
-	free(data->thread);
-	free(data->forks);
-	return ;
+	if (data->thread)
+		free(data->thread);
+	if (data->forks)
+		free(data->forks);
+	return (0);
 }
 
 static int	spawn_threads(t_data *data)
@@ -66,6 +68,5 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	spawn_threads(&data);
-	free_memory(&data);
-	return (0);
+	return (free_memory(&data));
 }
