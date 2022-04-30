@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:59:35 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 19:20:34 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <types.h>
+# include <stdio.h>
 
 int				init_data(t_data *data, char **argv, int argc);
 

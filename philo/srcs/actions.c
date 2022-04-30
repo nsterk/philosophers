@@ -6,13 +6,12 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 19:07:55 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/04/30 19:36:01 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	*do_stuff(void *arg)
 {
