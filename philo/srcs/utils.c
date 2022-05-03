@@ -6,14 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 18:38:40 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/03 21:45:18 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 #include <sys/time.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void	log_message(t_thread *thread, enum e_msg msg)
 {
@@ -29,12 +28,12 @@ void	log_message(t_thread *thread, enum e_msg msg)
 	data = (t_data *)thread->data;
 	pthread_mutex_lock(&data->write_mutex);
 	thread->timestamp = timestamp(data->start);
-	if (!someone_dead(data))
+	if (someone_dead(data) == false)
 		printf("%lu %d %s\n", thread->timestamp, thread->id, msgs[msg]);
 	if (msg == e_die)
 	{
 		pthread_mutex_lock(&data->death_mutex);
-		data->death = 1;
+		data->death = true;
 		pthread_mutex_unlock(&data->death_mutex);
 	}
 	pthread_mutex_unlock(&data->write_mutex);
@@ -46,14 +45,14 @@ int	log_error(char *str)
 	return (0);
 }
 
-int	someone_dead(t_data *data)
+bool	someone_dead(t_data *data)
 {
-	int	death;
+	bool	death;
 
-	death = 0;
+	death = false;
 	pthread_mutex_lock(&data->death_mutex);
 	if (data->death)
-		death = 1;
+		death = true;
 	pthread_mutex_unlock(&data->death_mutex);
 	return (death);
 }

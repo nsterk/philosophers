@@ -6,22 +6,21 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/05/03 20:59:24 by nsterk        ########   odam.nl          #
+#    Updated: 2022/05/03 20:31:25 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	philo
+NAME	=	philo_bonus
 CC		=	cc
 FLAGS	=	-Wall -Wextra -Werror
 LIBS	=	-Iinc -pthread
-SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/actions.c srcs/ft_atoi.c \
-			srcs/extra.c
+SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/actions.c srcs/ft_atoi.c
 OBJS	=	$(SRCS:%.c=%.o)
 
 all:	$(NAME)
 
 $(NAME): $(SRCS)
-	$(CC) $(SRCS) $(FLAGS) $(LIBS) -o philo
+	$(CC) $(SRCS) $(FLAGS) $(LIBS) -o philo_bonus
 
 clean:
 	@ rm -rf $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/04/30 19:36:01 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/03 21:53:00 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void	*do_stuff(void *arg)
 
 	thread = (t_thread *)arg;
 	data = (t_data *)thread->data;
+	if (data->nr_philos == 1)
+		return (one_philosopher(thread, data));
 	if (!(thread->id % 2))
 		usleep(1000);
 	thread->tod = timestamp(data->start) + data->time_to_die;
-	while (!someone_dead(data))
+	while (someone_dead(data) == false)
 	{
 		if (timestamp(data->start) >= thread->tod)
 			return (do_die(thread, data));
@@ -41,10 +43,12 @@ void	*do_stuff_count(void *arg)
 
 	thread = (t_thread *)arg;
 	data = (t_data *)thread->data;
+	if (data->nr_philos == 1)
+		return (one_philosopher(thread, data));
 	if (!(thread->id % 2))
 		usleep(1000);
 	thread->tod = timestamp(data->start) + data->time_to_die;
-	while (!someone_dead(data))
+	while (someone_dead(data) == false)
 	{
 		if (!(thread->to_eat) || timestamp(data->start) >= thread->tod)
 			return (do_die(thread, data));
