@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:54:37 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/05 19:02:38 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 int				init_data(t_data *data, char **argv, int argc);
 
 // thread functions
+void			do_the_thing(t_data *data);
 void			*do_stuff(void *arg);
 void			*do_stuff_count(void *arg);
 
 // thread utils
-int				someone_dead(t_data *data);
+int				create_semaphores(t_data *data);
+int				fork_processes(t_data *data);
 
 // general utils
 int				ft_atoi(const char *str);

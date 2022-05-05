@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:55:00 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/05 18:00:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define TYPES_BONUS_H
 
 # include <stdbool.h>
+# include <unistd.h>
+# include <semaphore.h>
+
+# define WRITE_SEM "/writesem"
+# define DEATH_SEM "/deathsem"
 
 enum e_msg
 {
@@ -27,8 +32,11 @@ enum e_msg
 typedef struct s_data
 {
 	unsigned long	start;
+	pid_t			*pid;
+	sem_t			*write_sem;
+	sem_t			*death_sem;
 	int				nr_philos;
-	int				current_philo;
+	int				id;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:25:46 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/05 16:48:14 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		return (log_error("Incorrect amount or arguments provided\n"));
 	if (init_data(&data, argv, argc))
-		return (log_error("Malloc failure\n"));
+		return (log_error("Problem initialising data\n"));
 	create_threads(&data, 0);
 	join_threads(&data, 0);
 	return (free_memory(&data));

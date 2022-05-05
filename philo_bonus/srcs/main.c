@@ -1,54 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
+/*   Updated: 2022/05/05 19:10:29 by nsterk        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
-// NOTES ON HOW TO GET PHILO ID INTO PROCESS
-// just like current_child
+#include <philo_bonus.h>
+#include <stdlib.h>
+#include <signal.h>
 
-// reminder to self: how does one spawn children again
-/*
-void	handle_the_children(t_pipex *pipex, char **argv, char **envp)
-{
-	fork_process(pipex);
-	if (pipex->pid[0] == 0)
-		first_child(pipex, argv[1], envp);
-	pipex->current_child++;
-	if (pipex->here_doc)
-		waitpid(pipex->pid[0], NULL, 0);
-	while (pipex->current_child < (pipex->nr_children - 1))
-	{
-		fork_process(pipex);
-		if (pipex->pid[pipex->current_child] == 0)
-			middle_children(pipex, envp);
-		pipex->current_child++;
-	}
-	fork_process(pipex);
-	if (pipex->pid[pipex->current_child] == 0)
-		last_child(pipex, argv[pipex->nr_children + pipex->offset], envp);
-}
-
-void	fork_process(t_pipex *pipex)
-{
-	pipex->pid[pipex->current_child] = fork();
-	if (pipex->pid[pipex->current_child] < 0)
-		exit_pipex(pipex, 1, "Failed to fork process");
-}
-
-void	wait_for_children(t_pipex *pipex)
+void	do_the_thing(t_data *data)
 {
 	int	i;
-	int	status;
 
-	if (pipex->here_doc)
-		i = 1;
-	else
-		i = 0;
-	while (i < pipex->nr_children)
+	data->write_sem = sem_open(WRITE_SEM, O_RDWR);
+	data->death_sem = sem_open(DEATH_SEM, O_RDWR);
+	i = 0;
+	while (i++ < data->to_eat)
 	{
-		waitpid(pipex->pid[i], &status, 0);
-		if (WIFEXITED(status))
-			pipex->status = WEXITSTATUS(status);
-		i++;
+		sem_wait(data->write_sem);
+		if (data->id == 0)
+			printf("\033[35m");
+		else if (data->id == 1)
+			printf("\033[36m");
+		else if (data->id == 2)
+			printf("\033[32m");
+		printf("%lu philo %d iteration %d\n", timestamp(data->start), data->id + 1, i);
+		printf("\033[0m");
+		if (i == data->to_eat)
+			break ;
+		sem_post(data->write_sem);
+		usleep(100);
 	}
-	close(pipex->infile);
-	if (pipex->here_doc)
-		unlink("/tmp/tmp_here_doc");
+	sem_close(data->write_sem);
+	sem_post(data->death_sem);
+	exit(0);
 }
-*/
+
+int	main(int argc, char **argv)
+{
+	t_data	data;
+
+	if (argc < 5 || argc > 6)
+		return (log_error("Incorrect amount or arguments provided\n"));
+	if (init_data(&data, argv, argc))
+		return (log_error("Problem initialising data\n"));
+	create_semaphores(&data);
+	fork_processes(&data);
+	// data.pid[0] = fork();
+	// if (data.pid[0] == 0)
+	// 	do_the_thing(&data);
+	// data.id++;
+	// data.pid[1] = fork();
+	// if (data.pid[1] == 0)
+	// 	do_the_thing(&data);
+	sem_close(data.write_sem);
+	sem_wait(data.death_sem);
+	kill(data.pid[0], SIGKILL);
+	kill(data.pid[1], SIGKILL);
+	sem_close(data.death_sem);
+	sem_unlink(WRITE_SEM);
+	sem_unlink(DEATH_SEM);
+	return (0);
+}
