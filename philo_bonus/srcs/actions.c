@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/17 16:36:00 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/17 16:49:19 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,7 @@
 void	do_stuff(t_data *data)
 {
 	open_sem_wrap(data->write_sem, WRITE_SEM);
-	// data->write_sem = sem_open(WRITE_SEM, O_RDWR);
-	// if (data->write_sem == SEM_FAILED)
-	// 	printf("open motherfucking sem write fail\n");
-	data->death_sem = sem_open(DEATH_SEM, O_RDWR);
-	if (data->death_sem == SEM_FAILED)
-		printf("open motherfucking sem death fail\n");
+	open_sem_wrap(data->death_sem, DEATH_SEM);
 	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
 	if (data->fork_sem == SEM_FAILED)
 		printf("open motherfucking sem fork fail\n");
@@ -57,7 +52,6 @@ void	do_stuff(t_data *data)
 		log_message(data, e_think);
 		// if (i == data->philo.to_eat)
 		// 	break ;
-		// sem_post(data->write_sem);
 	}
 	sem_close(data->write_sem);
 	sem_close(data->fork_sem);

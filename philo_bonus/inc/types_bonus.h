@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/05 19:54:25 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/17 17:12:41 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_philo
 	unsigned long	tod;
 	unsigned long	resume;
 }				t_philo;
-
 
 typedef struct s_data
 {
