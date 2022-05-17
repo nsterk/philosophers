@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/05 20:40:45 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/17 15:56:48 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	log_message(t_data *data, enum e_msg msg)
 	if (msg == e_die)
 	{
 		sem_close(data->write_sem);
+		sem_close(data->fork_sem);
 		sem_post(data->death_sem);
-		// sem_close(data->death_sem);
+		sem_close(data->death_sem);
 		exit(0);
 	}
 	sem_post(data->write_sem);
@@ -58,7 +59,6 @@ void	usleep_adj(t_data *data, unsigned long start_ms)
 	unsigned long	current_time;
 
 	current_time = timestamp(start_ms);
-	printf("ARE EW EVEN FUCKING GETTING HERE\n");
 	while (current_time < data->philo.resume)
 	{
 		if (current_time >= data->philo.tod)

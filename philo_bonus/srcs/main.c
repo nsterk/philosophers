@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/05 20:39:23 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/17 15:05:05 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (argc < 5 || argc > 6)
-		return (log_error("Incorrect amount or arguments provided\n"));
+		return (log_error("Incorrect amount or arguments provided"));
 	if (init_data(&data, argv, argc))
-		return (log_error("Problem initialising data\n"));
+		return (log_error("Problem initialising data"));
 	create_semaphores(&data);
 	fork_processes(&data);
 	sem_wait(data.death_sem);

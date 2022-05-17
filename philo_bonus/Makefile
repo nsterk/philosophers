@@ -6,7 +6,7 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/05/05 19:48:30 by nsterk        ########   odam.nl          #
+#    Updated: 2022/05/17 16:10:20 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME	=	philo_bonus
 CC		=	cc
 FLAGS	=	-Wall -Wextra -Werror
 LIBS	=	-Iinc -pthread
-SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/ft_atoi.c srcs/actions.c
+SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/ft_atoi.c srcs/actions.c \
+			srcs/semaphores.c
 OBJS	=	$(SRCS:%.c=%.o)
 
 all:	$(NAME)

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/05 20:42:05 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/17 16:10:23 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,6 @@ int	init_data(t_data *data, char **argv, int argc)
 	data->start = timestamp(0);
 	data->philo.timestamp = data->start;
 	return (0);
-}
-
-int	create_semaphores(t_data *data)
-{
-	printf("nr philos: %d\n", data->nr_philos);
-	data->fork_sem = sem_open(FORK_SEM, O_CREAT, 0644, data->nr_philos);
-	if (data->fork_sem == SEM_FAILED)
-		return (1);
-	data->write_sem = sem_open(WRITE_SEM, O_CREAT, 0644, 1);
-	if (data->write_sem == SEM_FAILED)
-		return (1);
-	data->death_sem = sem_open(DEATH_SEM, O_CREAT, 0644, 0);
-	if (data->death_sem == SEM_FAILED)
-		return (1);
-	return (0);
-}
-
-int	close_semaphores(t_data *data)
-{
-	int	ret;
-
-	ret = 0;
-	// ret |= sem_close(data->write_sem);
-	ret |= sem_close(data->death_sem);
-	// ret |= sem_close(data->fork_sem);
-	return (ret);
 }
 
 int	fork_processes(t_data *data)
