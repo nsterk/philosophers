@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/17 15:56:48 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/24 13:41:58 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void	log_message(t_data *data, enum e_msg msg)
 	printf("%lu %d %s\n", data->philo.timestamp, data->philo.id + 1, msgs[msg]);
 	if (msg == e_die)
 	{
-		sem_close(data->write_sem);
-		sem_close(data->fork_sem);
-		sem_post(data->death_sem);
-		sem_close(data->death_sem);
+		close_semaphores(data, true);
+		// sem_close(data->write_sem);
+		// sem_close(data->fork_sem);
+		// sem_post(data->death_sem);
+		// sem_close(data->death_sem);
 		exit(0);
 	}
 	sem_post(data->write_sem);

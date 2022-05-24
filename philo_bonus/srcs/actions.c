@@ -6,42 +6,15 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/17 16:49:19 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/24 14:35:07 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 
-// void	*do_stuff(void *arg)
-// {
-// 	t_thread	*thread;
-// 	t_data		*data;
-
-// 	thread = (t_thread *)arg;
-// 	data = (t_data *)thread->data;
-// 	if (data->nr_philos == 1)
-// 		return (one_philosopher(thread, data));
-// 	if (!(thread->id % 2))
-// 		usleep(1000);
-// 	thread->tod = timestamp(data->start) + data->time_to_die;
-// 	while (someone_dead(data) == false)
-// 	{
-// 		if (timestamp(data->start) >= thread->tod)
-// 			return (do_die(thread, data));
-// 		do_eat(thread, data);
-// 		do_sleep(thread, data);
-// 		log_message(thread, e_think);
-// 	}
-// 	return (NULL);
-// }
-
 void	do_stuff(t_data *data)
 {
-	open_sem_wrap(data->write_sem, WRITE_SEM);
-	open_sem_wrap(data->death_sem, DEATH_SEM);
-	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
-	if (data->fork_sem == SEM_FAILED)
-		printf("open motherfucking sem fork fail\n");
+	open_semaphores(data);
 	data->philo.tod = timestamp(data->start) + data->time_to_die;
 	while (1)
 	{
@@ -50,38 +23,29 @@ void	do_stuff(t_data *data)
 		do_eat(data);
 		do_sleep(data);
 		log_message(data, e_think);
-		// if (i == data->philo.to_eat)
-		// 	break ;
 	}
-	sem_close(data->write_sem);
-	sem_close(data->fork_sem);
-	sem_post(data->death_sem);
-	sem_close(data->death_sem);
 	exit(0);
 }
 
-// void	*do_stuff_count(void *arg)
-// {
-// 	t_thread	*thread;
-// 	t_data		*data;
-
-// 	thread = (t_thread *)arg;
-// 	data = (t_data *)thread->data;
-// 	if (data->nr_philos == 1)
-// 		return (one_philosopher(thread, data));
-// 	if (!(thread->id % 2))
-// 		usleep(1000);
-// 	thread->tod = timestamp(data->start) + data->time_to_die;
-// 	while (someone_dead(data) == false)
-// 	{
-// 		if (!(thread->to_eat) || timestamp(data->start) >= thread->tod)
-// 			return (do_die(thread, data));
-// 		do_eat(thread, data);
-// 		do_sleep(thread, data);
-// 		log_message(thread, e_think);
-// 	}
-// 	return (NULL);
-// }
+void	do_stuff_count(t_data *data)
+{
+	open_semaphores(data);
+	data->philo.tod = timestamp(data->start) + data->time_to_die;
+	while (1)
+	{
+		if (timestamp(data->start) >= data->philo.tod)
+			do_die(data);
+		do_eat(data);
+		if (!data->philo.to_eat)
+		{
+			close_semaphores(data, false);
+			break ;
+		}
+		do_sleep(data);
+		log_message(data, e_think);
+	}
+	exit(0);
+}
 
 void	do_eat(t_data *data)
 {
@@ -97,20 +61,6 @@ void	do_eat(t_data *data)
 	sem_post(data->fork_sem);
 	data->philo.to_eat--;
 }
-// void	do_eat(t_thread *thread, t_data *data)
-// {
-// 	pthread_mutex_lock(thread->left_fork);
-// 	log_message(thread, e_fork);
-// 	pthread_mutex_lock(thread->right_fork);
-// 	log_message(thread, e_fork);
-// 	log_message(thread, e_eat);
-// 	thread->resume = thread->timestamp + data->time_to_eat;
-// 	thread->tod = thread->timestamp + data->time_to_die;
-// 	usleep_adj(thread, data->start);
-// 	pthread_mutex_unlock(thread->left_fork);
-// 	pthread_mutex_unlock(thread->right_fork);
-// 	thread->to_eat--;
-// }
 
 void	do_sleep(t_data *data)
 {

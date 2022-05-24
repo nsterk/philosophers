@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/17 16:36:24 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/24 14:43:02 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,21 @@ int				init_data(t_data *data, char **argv, int argc);
 
 // thread functions
 void			do_stuff(t_data *data);
-// void			*do_stuff(void *arg);
-// void			*do_stuff_count(void *arg);
+void			do_stuff_count(t_data *data);
 void			do_eat(t_data *data);
 void			do_die(t_data *data);
 void			do_sleep(t_data *data);
 
+// process functions
+void			kill_the_children(t_data *data);
+void			wait_for_children(t_data *data);
+
 // thread utils
 int				create_semaphores(t_data *data);
-int				open_sem_wrap(sem_t *sem, char *addr);
-int				close_semaphores(t_data *data);
+void			open_semaphores(t_data *data);
+// int			open_sem_wrap(sem_t *sem, char *addr);
+int				close_semaphores(t_data *data, bool post);
+int				unlink_semaphores(void);
 int				fork_processes(t_data *data);
 
 // general utils
