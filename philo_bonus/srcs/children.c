@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/24 15:23:35 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/25 03:57:57 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,14 @@ void	wait_for_children(t_data *data)
 		i++;
 	}
 	sem_post(data->death_sem);
+
 }
 
 int	fork_processes(t_data *data)
 {
 	while (data->philo.id < data->nr_philos)
 	{
+		// printf("nr philos: %d	philo.id: %d\n", data->nr_philos, data->philo.id);
 		data->pid[data->philo.id] = fork();
 		if (data->pid[data->philo.id] < 0)
 			return (1);
@@ -54,5 +56,6 @@ int	fork_processes(t_data *data)
 		}
 		data->philo.id++;
 	}
+	usleep(1000);
 	return (0);
 }
