@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/17 16:09:24 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/25 01:19:09 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 17:26:02 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 int	create_semaphores(t_data *data)
 {
+	unlink_semaphores();
 	data->fork_sem = sem_open(FORK_SEM, O_CREAT | O_EXCL, 0644,
 			data->nr_philos);
 	if (data->fork_sem == SEM_FAILED)
-	{
-		printf("create fork sem fail\n");
 		return (1);
-	}
 	data->write_sem = sem_open(WRITE_SEM, O_CREAT | O_EXCL, 0644, 1);
 	if (data->write_sem == SEM_FAILED)
 	{
-		printf("create write sem fail\n");
+		sem_close(data->fork_sem);
+		sem_unlink(FORK_SEM);
 		return (1);
 	}
 	data->death_sem = sem_open(DEATH_SEM, O_CREAT | O_EXCL, 0644, 0);
 	if (data->death_sem == SEM_FAILED)
 	{
-		printf("create death sem fail\n");
+		sem_close(data->fork_sem);
+		sem_close(data->write_sem);
+		sem_unlink(FORK_SEM);
+		sem_unlink(WRITE_SEM);
 		return (1);
 	}
 	return (0);
@@ -41,14 +43,14 @@ void	open_semaphores(t_data *data)
 	data->death_sem = sem_open(DEATH_SEM, O_RDWR);
 	if (data->death_sem == SEM_FAILED)
 	{
-		printf("Failure opening death sem philo %d\n", data->philo.id);
+		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
 		exit(1);
 	}
 	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
 	if (data->fork_sem == SEM_FAILED)
 	{
 		sem_close(data->death_sem);
-		printf("Failure opening fork sem philo %d\n", data->philo.id);
+		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
 		exit(1);
 	}
 	data->write_sem = sem_open(WRITE_SEM, O_RDWR);
@@ -56,7 +58,7 @@ void	open_semaphores(t_data *data)
 	{
 		sem_close(data->fork_sem);
 		sem_close(data->death_sem);
-		printf("Failure opening write sem philo %d\n", data->philo.id);
+		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
 		exit(1);
 	}
 	return ;
@@ -85,4 +87,3 @@ int	close_semaphores(t_data *data, bool post)
 	ret |= sem_close(data->death_sem);
 	return (ret);
 }
-

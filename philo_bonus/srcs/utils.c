@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/24 13:41:58 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 17:36:32 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,22 @@ void	log_message(t_data *data, enum e_msg msg)
 	if (msg == e_die)
 	{
 		close_semaphores(data, true);
-		// sem_close(data->write_sem);
-		// sem_close(data->fork_sem);
-		// sem_post(data->death_sem);
-		// sem_close(data->death_sem);
 		exit(0);
 	}
 	sem_post(data->write_sem);
 }
 
-int	log_error(char *str)
+int	log_error(t_data *data, char *str, int stat)
 {
+	if (stat > 0)
+		free(data->pid);
+	if (stat > 1)
+	{
+		unlink_semaphores();
+		close_semaphores(data, false);
+	}
 	printf("%s\n", str);
-	return (0);
+	return (1);
 }
 
 unsigned long	timestamp(unsigned long start_ms)

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 16:04:39 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 17:58:13 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,36 @@ static int	init_threads(t_data *data)
 	return (0);
 }
 
-static int	init_mutexes(t_data *data)
+int	init_data(t_data *data, char **argv, int argc)
+{
+	data->nr_philos = ft_atoi(argv[1]);
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		data->to_eat = ft_atoi(argv[5]);
+	else
+		data->to_eat = 0;
+	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
+		|| data->time_to_sleep < 0 || data->to_eat < 0)
+		return (1);
+	data->death = 0;
+	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
+	if (!data->thread)
+		return (1);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
+	if (!data->forks)
+	{
+		free(data->thread);
+		return (1);
+	}
+	data->start = timestamp(0);
+	init_threads(data);
+	init_mutexes(data);
+	return (0);
+}
+
+int	init_mutexes(t_data *data)
 {
 	int	i;
 
@@ -50,29 +79,5 @@ static int	init_mutexes(t_data *data)
 		return (1);
 	if (pthread_mutex_init(&data->death_mutex, NULL))
 		return (1);
-	return (0);
-}
-
-int	init_data(t_data *data, char **argv, int argc)
-{
-	data->nr_philos = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		data->to_eat = ft_atoi(argv[5]);
-	else
-		data->to_eat = 0;
-	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
-		|| data->time_to_sleep < 0 || data->to_eat < 0)
-		return (1);
-	data->death = 0;
-	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
-	if (!data->thread || !data->forks)
-		return (1);
-	data->start = timestamp(0);
-	init_threads(data);
-	init_mutexes(data);
 	return (0);
 }

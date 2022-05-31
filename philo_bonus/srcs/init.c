@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/24 14:43:51 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 16:43:18 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	init_data(t_data *data, char **argv, int argc)
 		|| data->time_to_sleep < 0 || data->philo.to_eat < 0)
 		return (1);
 	data->pid = malloc(sizeof(pid_t) * data->nr_philos);
+	if (!data->pid)
+		return (1);
 	data->philo.id = 0;
 	data->philo.resume = 0;
 	data->start = timestamp(0);

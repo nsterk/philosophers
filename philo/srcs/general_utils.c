@@ -1,60 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   general_utils.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:45:18 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 18:08:12 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdlib.h>
 
-void	log_message(t_thread *thread, enum e_msg msg)
+int	log_error(t_data *data, char *str, int stat)
 {
-	t_data				*data;
-	static const char	*msgs[] = {
-		"has taken a fork",
-		"is eating",
-		"is sleeping",
-		"is thinking",
-		"died"
-	};
-
-	data = (t_data *)thread->data;
-	pthread_mutex_lock(&data->write_mutex);
-	thread->timestamp = timestamp(data->start);
-	if (someone_dead(data) == false)
-		printf("%lu %d %s\n", thread->timestamp, thread->id, msgs[msg]);
-	if (msg == e_die)
-	{
-		pthread_mutex_lock(&data->death_mutex);
-		data->death = true;
-		pthread_mutex_unlock(&data->death_mutex);
-	}
-	pthread_mutex_unlock(&data->write_mutex);
-}
-
-int	log_error(char *str)
-{
+	if (stat > 0)
+		free_memory(data);
 	printf("%s\n", str);
-	return (0);
-}
-
-bool	someone_dead(t_data *data)
-{
-	bool	death;
-
-	death = false;
-	pthread_mutex_lock(&data->death_mutex);
-	if (data->death)
-		death = true;
-	pthread_mutex_unlock(&data->death_mutex);
-	return (death);
+	return (stat);
 }
 
 unsigned long	timestamp(unsigned long start_ms)
@@ -74,4 +40,23 @@ void	usleep_adj(t_thread *thread, long long start_ms)
 	data = (t_data *)thread->data;
 	while (timestamp(start_ms) < thread->resume && !someone_dead(data))
 		usleep(100);
+}
+
+int	free_memory(t_data *data)
+{
+	int	i;
+
+	pthread_mutex_destroy(&data->death_mutex);
+	pthread_mutex_destroy(&data->write_mutex);
+	i = 0;
+	while (i < data->nr_philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	if (data->thread)
+		free(data->thread);
+	if (data->forks)
+		free(data->forks);
+	return (0);
 }
