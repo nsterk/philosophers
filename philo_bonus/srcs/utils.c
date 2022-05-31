@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 17:36:32 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 18:19:09 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,12 @@ void	usleep_adj(t_data *data, unsigned long start_ms)
 		usleep(100);
 		current_time = timestamp(start_ms);
 	}
+}
+
+void	one_philosopher(t_data *data)
+{
+	log_message(data, e_fork);
+	data->philo.resume = data->philo.tod;
+	usleep_adj(data, data->start);
+	log_message(data, e_die);
 }

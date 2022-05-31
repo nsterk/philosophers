@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 17:31:09 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/05/31 18:21:21 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void			wait_for_children(t_data *data);
 // thread utils
 int				create_semaphores(t_data *data);
 void			open_semaphores(t_data *data);
-// int			open_sem_wrap(sem_t *sem, char *addr);
 int				close_semaphores(t_data *data, bool post);
 int				unlink_semaphores(void);
 int				fork_processes(t_data *data);
@@ -44,5 +43,6 @@ int				ft_atoi(const char *str);
 int				log_error(t_data *data, char *str, int stat);
 unsigned long	timestamp(unsigned long start_ms);
 void			log_message(t_data *data, enum e_msg msg);
+void			one_philosopher(t_data *data);
 
 #endif
