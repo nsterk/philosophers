@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/03 00:26:24 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:41:16 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*do_stuff(void *arg)
 			return (do_die(thread, data));
 		do_eat(thread, data);
 		do_sleep(thread, data);
-		log_message(thread, e_think);
+		log_message(thread, E_THINK);
 	}
 	return (NULL);
 }
@@ -56,7 +56,7 @@ void	*do_stuff_count(void *arg)
 		if (!(thread->to_eat))
 			return (NULL);
 		do_sleep(thread, data);
-		log_message(thread, e_think);
+		log_message(thread, E_THINK);
 	}
 	return (NULL);
 }
@@ -64,10 +64,10 @@ void	*do_stuff_count(void *arg)
 void	do_eat(t_thread *thread, t_data *data)
 {
 	pthread_mutex_lock(thread->left_fork);
-	log_message(thread, e_fork);
+	log_message(thread, E_FORK);
 	pthread_mutex_lock(thread->right_fork);
-	log_message(thread, e_fork);
-	log_message(thread, e_eat);
+	log_message(thread, E_FORK);
+	log_message(thread, E_EAT);
 	thread->resume = thread->timestamp + data->time_to_eat;
 	thread->tod = thread->timestamp + data->time_to_die;
 	usleep_adj(thread, data->start);
@@ -78,7 +78,7 @@ void	do_eat(t_thread *thread, t_data *data)
 
 void	do_sleep(t_thread *thread, t_data *data)
 {
-	log_message(thread, e_sleep);
+	log_message(thread, E_SLEEP);
 	thread->resume = thread->timestamp + data->time_to_sleep;
 	usleep_adj(thread, data->start);
 }
@@ -87,6 +87,6 @@ void	*do_die(t_thread *thread, t_data *data)
 {
 	thread->resume = thread->tod;
 	usleep_adj(thread, data->start);
-	log_message(thread, e_die);
+	log_message(thread, E_DIE);
 	return (NULL);
 }

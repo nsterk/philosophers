@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/17 17:12:41 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:41:54 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,13 @@
 # define DEATH_SEM "/deathsem"
 # define FORK_SEM "/forksem"
 
-# define PINK "\033[35m"
-# define BLUE "\033[36m"
-# define GREEN "\033[32m"
-# define YELLOW "\033[33m"
-# define RESET_COLOUR "\033[0m"
-
 enum e_msg
 {
-	e_fork,
-	e_eat,
-	e_sleep,
-	e_think,
-	e_die
+	E_FORK,
+	E_EAT,
+	E_SLEEP,
+	E_THINK,
+	E_DIE
 };
 
 typedef struct s_philo

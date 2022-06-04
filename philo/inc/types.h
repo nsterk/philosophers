@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:47:09 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:40:14 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 enum e_msg
 {
-	e_fork,
-	e_eat,
-	e_sleep,
-	e_think,
-	e_die
+	E_FORK,
+	E_EAT,
+	E_SLEEP,
+	E_THINK,
+	E_DIE
 };
 
 typedef struct s_thread

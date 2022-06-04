@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 18:07:31 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:44:54 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	log_message(t_thread *thread, enum e_msg msg)
 	thread->timestamp = timestamp(data->start);
 	if (someone_dead(data) == false)
 		printf("%lu %d %s\n", thread->timestamp, thread->id, msgs[msg]);
-	if (msg == e_die)
+	if (msg == E_DIE)
 	{
 		pthread_mutex_lock(&data->death_mutex);
 		data->death = true;

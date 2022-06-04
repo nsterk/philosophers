@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 18:19:09 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:44:21 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	log_message(t_data *data, enum e_msg msg)
 	sem_wait(data->write_sem);
 	data->philo.timestamp = timestamp(data->start);
 	printf("%lu %d %s\n", data->philo.timestamp, data->philo.id + 1, msgs[msg]);
-	if (msg == e_die)
+	if (msg == E_DIE)
 	{
 		close_semaphores(data, true);
 		exit(0);
@@ -74,8 +74,8 @@ void	usleep_adj(t_data *data, unsigned long start_ms)
 
 void	one_philosopher(t_data *data)
 {
-	log_message(data, e_fork);
+	log_message(data, E_FORK);
 	data->philo.resume = data->philo.tod;
 	usleep_adj(data, data->start);
-	log_message(data, e_die);
+	log_message(data, E_DIE);
 }

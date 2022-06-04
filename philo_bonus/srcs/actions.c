@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/03 00:36:41 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 16:44:03 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	do_stuff(t_data *data)
 			do_die(data);
 		do_eat(data);
 		do_sleep(data);
-		log_message(data, e_think);
+		log_message(data, E_THINK);
 	}
 	exit(0);
 }
@@ -46,7 +46,7 @@ void	do_stuff_count(t_data *data)
 			break ;
 		}
 		do_sleep(data);
-		log_message(data, e_think);
+		log_message(data, E_THINK);
 	}
 	exit(0);
 }
@@ -54,10 +54,10 @@ void	do_stuff_count(t_data *data)
 void	do_eat(t_data *data)
 {
 	sem_wait(data->fork_sem);
-	log_message(data, e_fork);
+	log_message(data, E_FORK);
 	sem_wait(data->fork_sem);
-	log_message(data, e_fork);
-	log_message(data, e_eat);
+	log_message(data, E_FORK);
+	log_message(data, E_EAT);
 	data->philo.resume = data->philo.timestamp + data->time_to_eat;
 	data->philo.tod = data->philo.timestamp + data->time_to_die;
 	usleep_adj(data, data->start);
@@ -68,7 +68,7 @@ void	do_eat(t_data *data)
 
 void	do_sleep(t_data *data)
 {
-	log_message(data, e_sleep);
+	log_message(data, E_SLEEP);
 	data->philo.resume = data->philo.timestamp + data->time_to_sleep;
 	usleep_adj(data, data->start);
 }
@@ -77,5 +77,5 @@ void	do_die(t_data *data)
 {
 	data->philo.resume = data->philo.tod;
 	usleep_adj(data, data->start);
-	log_message(data, e_die);
+	log_message(data, E_DIE);
 }
