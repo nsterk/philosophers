@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/03 21:53:00 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/03 00:26:24 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ void	*do_stuff_count(void *arg)
 	thread->tod = timestamp(data->start) + data->time_to_die;
 	while (someone_dead(data) == false)
 	{
-		if (!(thread->to_eat) || timestamp(data->start) >= thread->tod)
+		if (timestamp(data->start) >= thread->tod)
 			return (do_die(thread, data));
 		do_eat(thread, data);
+		if (!(thread->to_eat))
+			return (NULL);
 		do_sleep(thread, data);
 		log_message(thread, e_think);
 	}

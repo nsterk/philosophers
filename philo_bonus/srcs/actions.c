@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 18:20:05 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/03 00:36:41 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	do_stuff(t_data *data)
 	data->philo.tod = timestamp(data->start) + data->time_to_die;
 	if (data->nr_philos == 1)
 		one_philosopher(data);
+	if (data->philo.id % 2)
+		usleep(50);
 	while (1)
 	{
 		if (timestamp(data->start) >= data->philo.tod)

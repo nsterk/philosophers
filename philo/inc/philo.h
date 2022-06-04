@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 17:58:28 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/03 00:22:36 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <types.h> 
 # include <stdio.h>
 
-int				init_data(t_data *data, char **argv, int argc);
+int				init_data(t_data *data);
 int				init_mutexes(t_data *data);
 
 // thread functions
