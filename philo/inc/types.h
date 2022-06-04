@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 16:40:14 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 17:23:30 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ enum e_msg
 	E_SLEEP,
 	E_THINK,
 	E_DIE
+};
+
+enum e_error
+{
+	E_INVALID,
+	E_INIT,
+	E_SEMAPHORE,
+	E_THREAD,
+	E_FORK
 };
 
 typedef struct s_thread

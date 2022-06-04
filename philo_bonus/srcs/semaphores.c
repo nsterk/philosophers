@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/17 16:09:24 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 17:26:02 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 19:47:08 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	open_semaphores(t_data *data)
 	data->death_sem = sem_open(DEATH_SEM, O_RDWR);
 	if (data->death_sem == SEM_FAILED)
 	{
-		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
+		printf("Error opening semaphore %d\n", data->philo.id);
 		exit(1);
 	}
 	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
 	if (data->fork_sem == SEM_FAILED)
 	{
 		sem_close(data->death_sem);
-		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
+		printf("Error opening semaphore %d\n", data->philo.id);
 		exit(1);
 	}
 	data->write_sem = sem_open(WRITE_SEM, O_RDWR);
@@ -58,7 +58,7 @@ void	open_semaphores(t_data *data)
 	{
 		sem_close(data->fork_sem);
 		sem_close(data->death_sem);
-		printf("Error opening semaphore in philosopher %d\n", data->philo.id);
+		printf("Error opening semaphore %d\n", data->philo.id);
 		exit(1);
 	}
 	return ;
@@ -79,11 +79,11 @@ int	close_semaphores(t_data *data, bool post)
 {
 	int	ret;
 
+	if (post == true)
+		sem_post(data->death_sem);
 	ret = 0;
 	ret |= sem_close(data->write_sem);
 	ret |= sem_close(data->fork_sem);
-	if (post == true)
-		sem_post(data->death_sem);
 	ret |= sem_close(data->death_sem);
 	return (ret);
 }

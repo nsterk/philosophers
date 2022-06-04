@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 16:44:03 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 17:07:06 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	do_stuff(t_data *data)
 	if (data->nr_philos == 1)
 		one_philosopher(data);
 	if (data->philo.id % 2)
-		usleep(50);
+		usleep(1000);
 	while (1)
 	{
 		if (timestamp(data->start) >= data->philo.tod)
@@ -35,6 +35,8 @@ void	do_stuff_count(t_data *data)
 {
 	open_semaphores(data);
 	data->philo.tod = timestamp(data->start) + data->time_to_die;
+	if (data->philo.id % 2)
+		usleep(1000);
 	while (1)
 	{
 		if (timestamp(data->start) >= data->philo.tod)

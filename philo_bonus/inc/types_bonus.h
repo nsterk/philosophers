@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 16:41:54 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 17:35:53 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ enum e_msg
 	E_SLEEP,
 	E_THINK,
 	E_DIE
+};
+
+enum e_error
+{
+	E_INVALID,
+	E_INIT,
+	E_SEM,
+	E_THREAD,
+	E_PROCESS
 };
 
 typedef struct s_philo

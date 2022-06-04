@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 16:46:08 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 19:51:16 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	kill_the_children(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->nr_philos)
+	while (i < data->philo.id)
 	{
 		kill(data->pid[i], SIGKILL);
 		i++;

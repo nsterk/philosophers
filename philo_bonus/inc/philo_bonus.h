@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 18:21:21 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 19:48:39 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int				fork_processes(t_data *data);
 // general utils
 void			usleep_adj(t_data *data, unsigned long start_ms);
 int				ft_atoi(const char *str);
-int				log_error(t_data *data, char *str, int stat);
+void			log_error(t_data *data, enum e_error err);
 unsigned long	timestamp(unsigned long start_ms);
 void			log_message(t_data *data, enum e_msg msg);
 void			one_philosopher(t_data *data);

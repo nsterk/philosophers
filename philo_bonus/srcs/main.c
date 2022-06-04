@@ -6,12 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 17:35:10 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 19:51:20 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <pthread.h>
+#include <signal.h>
 
 static void	*monitor_death(void *arg)
 {
@@ -38,19 +39,17 @@ int	main(int argc, char **argv)
 	pthread_t	monitor;
 
 	if (argc < 5 || argc > 6)
-		return (log_error(&data, "Incorrect amount or arguments provided", 0));
+		log_error(&data, E_INVALID);
 	if (init_data(&data, argv, argc))
-		return (log_error(&data, "Error initialising data", 0));
+		log_error(&data, E_INIT);
 	if (create_semaphores(&data))
-		return (log_error(&data, "Error creating semaphores", 1));
+		log_error(&data, E_SEM);
 	if (create_monitor(&data, &monitor))
-		return (log_error(&data, "Error creating monitoring thread", 2));
-	else
-	{
-		fork_processes(&data);
-		unlink_semaphores();
-		wait_for_children(&data);
-	}
+		log_error(&data, E_THREAD);
+	if (fork_processes(&data))
+		log_error(&data, E_PROCESS);
+	wait_for_children(&data);
+	unlink_semaphores();
 	close_semaphores(&data, false);
 	free(data.pid);
 	return (0);

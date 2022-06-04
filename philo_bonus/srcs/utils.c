@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 16:44:21 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 19:50:46 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,30 @@ void	log_message(t_data *data, enum e_msg msg)
 	sem_post(data->write_sem);
 }
 
-int	log_error(t_data *data, char *str, int stat)
+void	log_error(t_data *data, enum e_error err)
 {
-	if (stat > 0)
+	static const char	*msgs[] = {
+		"Incorrect amount of arguments provided",
+		"Error initialising data",
+		"Error creating semaphores",
+		"Error creating thread",
+		"Error forking processes, program terminated"
+	};
+
+	if (err == E_PROCESS)
+	{
+		sem_post(data->death_sem);
+		usleep(5000);
+	}
+	printf("%s\n", msgs[err]);
+	if (err > E_INIT)
 		free(data->pid);
-	if (stat > 1)
+	if (err > E_THREAD)
 	{
 		unlink_semaphores();
 		close_semaphores(data, false);
 	}
-	printf("%s\n", str);
-	return (1);
+	exit(1);
 }
 
 unsigned long	timestamp(unsigned long start_ms)
