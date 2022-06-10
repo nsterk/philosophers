@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/05/31 18:08:12 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/10 21:07:07 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,20 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	log_error(t_data *data, char *str, int stat)
+int	log_error(t_data *data, enum e_error err)
 {
-	if (stat > 0)
+	static const char	*msgs[] = {
+		"Incorrect nr of arguments provided",
+		"Invalid arguments provided",
+		"Error initialising data"
+		"Error creating threads",
+		"Error joining threads"
+	};
+
+	if (err > E_INIT)
 		free_memory(data);
-	printf("%s\n", str);
-	return (stat);
+	printf("%s\n", msgs[err]);
+	return (1);
 }
 
 unsigned long	timestamp(unsigned long start_ms)
@@ -33,7 +41,20 @@ unsigned long	timestamp(unsigned long start_ms)
 	return (current_ms - start_ms);
 }
 
-void	usleep_adj(t_thread *thread, long long start_ms)
+void	naomi_sleep(t_thread *thread, unsigned long ms)
+{
+	t_data			*data;
+	struct timeval	elapsed;
+	unsigned long	elapsed_ms;
+
+	data = (t_data *)thread->data;
+	gettimeofday(&elapsed, NULL);
+	elapsed_ms = (elapsed.tv_sec * 1000) + (elapsed.tv_usec / 1000);
+	while (timestamp(elapsed_ms) < ms && someone_dead(data) == false)
+		usleep(50);
+}
+
+void	usleep_adj(t_thread *thread, unsigned long start_ms)
 {
 	t_data	*data;
 

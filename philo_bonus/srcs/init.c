@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/03 00:11:07 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 20:38:19 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	is_numeric(char *str)
 	return (i);
 }
 
-static bool	valid_args(t_data *data, char **argv, int argc)
+bool	valid_args(t_data *data, char **argv, int argc)
 {
 	int	i;
 
@@ -52,13 +52,15 @@ static bool	valid_args(t_data *data, char **argv, int argc)
 	return (true);
 }
 
-int	init_data(t_data *data, char **argv, int argc)
+int	init_data(t_data *data)
 {
-	if (valid_args(data, argv, argc) == false)
-		return (1);
 	data->pid = malloc(sizeof(pid_t) * data->nr_philos);
 	if (!data->pid)
 		return (1);
+	if (data->philo.to_eat)
+		data->portion_control = true;
+	else
+		data->portion_control = false;
 	data->philo.id = 0;
 	data->philo.resume = 0;
 	data->start = timestamp(0);

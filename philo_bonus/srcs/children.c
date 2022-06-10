@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 19:51:16 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/07 13:30:03 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	kill_the_children(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->philo.id)
+	while (i < data->nr_philos)
 	{
 		kill(data->pid[i], SIGKILL);
 		i++;
@@ -46,14 +46,33 @@ int	fork_processes(t_data *data)
 		if (data->pid[data->philo.id] < 0)
 			return (1);
 		if (data->pid[data->philo.id] == 0)
-		{
-			if (data->philo.to_eat)
-				do_stuff_count(data);
-			else
-				do_stuff(data);
-		}
+			do_stuff(data);
 		data->philo.id++;
 	}
 	usleep(500);
 	return (0);
+}
+
+void	do_stuff(t_data *data)
+{
+	open_semaphores(data);
+	data->philo.tod = timestamp(data->start) + data->time_to_die;
+	if (data->nr_philos == 1)
+		one_philosopher(data);
+	if (data->philo.id % 2)
+		usleep(1000);
+	while (1)
+	{
+		if (timestamp(data->start) >= data->philo.tod)
+			do_die(data);
+		do_eat(data);
+		if (data->portion_control == true && !data->philo.to_eat)
+		{
+			close_semaphores(data, false);
+			break ;
+		}
+		do_sleep(data);
+		log_message(data, E_THINK);
+	}
+	exit(0);
 }

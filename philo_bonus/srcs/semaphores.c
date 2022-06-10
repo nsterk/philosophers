@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/17 16:09:24 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 19:47:08 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 20:47:33 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ int	close_semaphores(t_data *data, bool post)
 	int	ret;
 
 	if (post == true)
+	{
 		sem_post(data->death_sem);
+		usleep(5000);
+	}
 	ret = 0;
 	ret |= sem_close(data->write_sem);
 	ret |= sem_close(data->fork_sem);

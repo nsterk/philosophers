@@ -6,60 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 19:50:46 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/04 20:26:20 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <sys/time.h>
 #include <unistd.h>
-
-void	log_message(t_data *data, enum e_msg msg)
-{
-	static const char	*msgs[] = {
-		"has taken a fork",
-		"is eating",
-		"is sleeping",
-		"is thinking",
-		"died"
-	};
-
-	sem_wait(data->write_sem);
-	data->philo.timestamp = timestamp(data->start);
-	printf("%lu %d %s\n", data->philo.timestamp, data->philo.id + 1, msgs[msg]);
-	if (msg == E_DIE)
-	{
-		close_semaphores(data, true);
-		exit(0);
-	}
-	sem_post(data->write_sem);
-}
-
-void	log_error(t_data *data, enum e_error err)
-{
-	static const char	*msgs[] = {
-		"Incorrect amount of arguments provided",
-		"Error initialising data",
-		"Error creating semaphores",
-		"Error creating thread",
-		"Error forking processes, program terminated"
-	};
-
-	if (err == E_PROCESS)
-	{
-		sem_post(data->death_sem);
-		usleep(5000);
-	}
-	printf("%s\n", msgs[err]);
-	if (err > E_INIT)
-		free(data->pid);
-	if (err > E_THREAD)
-	{
-		unlink_semaphores();
-		close_semaphores(data, false);
-	}
-	exit(1);
-}
 
 unsigned long	timestamp(unsigned long start_ms)
 {
@@ -85,10 +38,38 @@ void	usleep_adj(t_data *data, unsigned long start_ms)
 	}
 }
 
-void	one_philosopher(t_data *data)
+static const char	*ft_skipspace(const char *str)
 {
-	log_message(data, E_FORK);
-	data->philo.resume = data->philo.tod;
-	usleep_adj(data, data->start);
-	log_message(data, E_DIE);
+	while (*str == '\t' || *str == '\n' || *str == '\f'
+		|| *str == '\r' || *str == '\v' || *str == ' ')
+		str++;
+	return (str);
+}
+
+int	ft_atoi(const char *str)
+{
+	int	num;
+	int	new_num;
+	int	negative;
+
+	num = 0;
+	negative = 1;
+	if (*str == '\0')
+		return (0);
+	str = ft_skipspace(str);
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			negative *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		new_num = (num * 10) + (*str - '0');
+		if (new_num < num)
+			return (0);
+		num = new_num;
+		str++;
+	}
+	return (num * negative);
 }

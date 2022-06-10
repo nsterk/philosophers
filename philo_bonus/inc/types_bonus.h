@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 17:35:53 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/07 13:39:47 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ typedef struct s_data
 	unsigned long	start;
 	unsigned long	tod;
 	unsigned long	timestamp;
-	int				id;
 	int				nr_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				to_eat;
-	bool			death;
+	bool			portion_control;
 }				t_data;
 
 #endif

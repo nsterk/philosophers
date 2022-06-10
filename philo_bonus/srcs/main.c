@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 19:51:20 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/07 13:32:56 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	main(int argc, char **argv)
 	t_data		data;
 	pthread_t	monitor;
 
-	if (argc < 5 || argc > 6)
+	if (argc < 5 || argc > 6 || valid_args(&data, argv, argc) == false)
 		log_error(&data, E_INVALID);
-	if (init_data(&data, argv, argc))
+	if (init_data(&data))
 		log_error(&data, E_INIT);
 	if (create_semaphores(&data))
 		log_error(&data, E_SEM);

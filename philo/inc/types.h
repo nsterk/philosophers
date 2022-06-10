@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 17:23:30 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/10 21:07:48 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,33 @@ enum e_msg
 
 enum e_error
 {
+	E_AMOUNT,
 	E_INVALID,
 	E_INIT,
-	E_SEMAPHORE,
-	E_THREAD,
-	E_FORK
+	E_THREAD_CREAT,
+	E_THREAD_JOIN
 };
 
 typedef struct s_thread
 {
 	pthread_t		tid;
+	pthread_t		monitor;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	eat;
 	int				id;
 	unsigned long	resume;
 	unsigned long	tod;
 	unsigned long	timestamp;
 	int				to_eat;
 	void			*data;
-	int				status;
+	unsigned long	last_meal;
 }				t_thread;
 
 typedef struct s_data
 {
 	t_thread		*thread;
+	pthread_t		monitoring_thread;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	death_mutex;
@@ -61,6 +64,7 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				to_eat;
 	bool			death;
+	bool			portion_control;
 }				t_data;
 
 #endif
