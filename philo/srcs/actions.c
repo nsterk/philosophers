@@ -6,12 +6,21 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/10 21:08:54 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 00:28:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 #include <unistd.h>
+
+static void	take_forks(t_thread *thread)
+{
+	pthread_mutex_lock(thread->left_fork);
+	log_message(thread, E_FORK);
+	pthread_mutex_lock(thread->right_fork);
+	log_message(thread, E_FORK);
+	return ;
+}
 
 void	*monitor_thread(void *arg)
 {
@@ -49,6 +58,7 @@ void	*do_stuff(void *arg)
 	{
 		// if (timestamp(data->start) >= thread->tod)
 		// 	return (do_die(thread, data));
+		take_forks(thread);
 		do_eat(thread, data);
 		if (data->portion_control == true && !thread->to_eat)
 			return (NULL);
@@ -61,12 +71,11 @@ void	*do_stuff(void *arg)
 void	do_eat(t_thread *thread, t_data *data)
 {
 	// printf("\033[35m BEFORE FIRST FORK	thread %d	last_meal: %lu	timestamp: %lu\033[0m\n", thread->id, thread->last_meal, thread->timestamp);
-	pthread_mutex_lock(thread->left_fork);
-	// printf("\033[35m AFTER FIRST FORK	thread %d	last_meal: %lu	timestamp: %lu\033[0m\n", thread->id, thread->last_meal, thread->timestamp);
-	log_message(thread, E_FORK);
-	// printf("\033[35m BEFORE SECOND FORK	thread %d	last_meal: %lu	timestamp: %lu\033[0m\n", thread->id, thread->last_meal, thread->timestamp);
-	pthread_mutex_lock(thread->right_fork);
-	log_message(thread, E_FORK);
+	// pthread_mutex_lock(thread->left_fork);
+	// log_message(thread, E_FORK);
+	// // printf("\033[35m BEFORE SECOND FORK	thread %d	last_meal: %lu	timestamp: %lu\033[0m\n", thread->id, thread->last_meal, thread->timestamp);
+	// pthread_mutex_lock(thread->right_fork);
+	// log_message(thread, E_FORK);
 	// printf("\033[35m AFTER SECOND FORK	thread %d	last_meal: %lu	timestamp: %lu\033[0m\n", thread->id, thread->last_meal, thread->timestamp);
 	log_message(thread, E_EAT);
 	pthread_mutex_lock(&thread->eat);
