@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/07 13:39:47 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 00:55:04 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define WRITE_SEM "/writesem"
 # define DEATH_SEM "/deathsem"
 # define FORK_SEM "/forksem"
+# define MEAL_SEM "/mealsem"
 
 enum e_msg
 {
@@ -46,16 +47,23 @@ typedef struct s_philo
 	unsigned long	timestamp;
 	unsigned long	tod;
 	unsigned long	resume;
+	sem_t			meal_sem;
 }				t_philo;
 
+//semaphores[0] = death_sem
+//semaphores[1] = write_sem
+//semaphores[2] = fork_sem
+//semaphores[3] = meal_sem
 typedef struct s_data
 {
 	pid_t			*pid;
+	sem_t			*sems[4];
 	sem_t			*write_sem;
 	sem_t			*death_sem;
 	sem_t			*fork_sem;
 	t_philo			philo;
 	unsigned long	start;
+	unsigned long	last_meal;
 	unsigned long	tod;
 	unsigned long	timestamp;
 	int				nr_philos;

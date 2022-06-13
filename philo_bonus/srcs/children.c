@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/07 13:30:03 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 02:10:13 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	fork_processes(t_data *data)
 
 void	do_stuff(t_data *data)
 {
-	open_semaphores(data);
+	if (open_semaphores(data))
+	{
+		printf("Error opening semaphore in child\n");
+		exit(1);
+	}
 	data->philo.tod = timestamp(data->start) + data->time_to_die;
 	if (data->nr_philos == 1)
 		one_philosopher(data);
@@ -68,7 +72,7 @@ void	do_stuff(t_data *data)
 		do_eat(data);
 		if (data->portion_control == true && !data->philo.to_eat)
 		{
-			close_semaphores(data, false);
+			close_semaphores(data, false, 3, false);
 			break ;
 		}
 		do_sleep(data);

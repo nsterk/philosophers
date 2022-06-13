@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/10 21:07:12 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 00:35:55 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void			do_eat(t_thread *thread, t_data *data);
 void			*do_die(t_thread *thread, t_data *data);
 
 // thread utils
-int				create_monitor(t_data *data, t_thread *thread);
-void			*monitor_thread(void *arg);
 void			*monitor(void *arg);
 void			log_message(t_thread *thread, enum e_msg msg);
 bool			someone_dead(t_data *data);
@@ -42,7 +40,6 @@ unsigned long	timestamp(unsigned long start_ms);
 
 // edge case
 void			*one_philosopher(t_thread *thread, t_data *data);
-
 
 //naomi functions
 void			naomi_sleep(t_thread *thread, unsigned long ms);	
