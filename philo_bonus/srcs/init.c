@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 20:38:19 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 22:14:36 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,10 @@ int	init_data(t_data *data)
 	if (!data->pid)
 		return (1);
 	if (data->philo.to_eat)
-		data->portion_control = true;
+		data->diet = true;
 	else
-		data->portion_control = false;
+		data->diet = false;
 	data->philo.id = 0;
-	data->philo.resume = 0;
 	data->start = timestamp(0);
-	data->philo.timestamp = data->start;
 	return (0);
 }

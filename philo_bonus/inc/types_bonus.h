@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 00:55:04 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 22:14:22 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ enum e_error
 typedef struct s_philo
 {
 	int				id;
+	sem_t			*meal_sem;
+	char			*meal_sem_name;
 	int				to_eat;
-	unsigned long	timestamp;
-	unsigned long	tod;
-	unsigned long	resume;
-	sem_t			meal_sem;
+	unsigned long	last_meal;
 }				t_philo;
 
 //semaphores[0] = death_sem
@@ -58,19 +57,17 @@ typedef struct s_data
 {
 	pid_t			*pid;
 	sem_t			*sems[4];
+	sem_t			*meal_sem;
 	sem_t			*write_sem;
 	sem_t			*death_sem;
 	sem_t			*fork_sem;
 	t_philo			philo;
 	unsigned long	start;
-	unsigned long	last_meal;
-	unsigned long	tod;
-	unsigned long	timestamp;
 	int				nr_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	bool			portion_control;
+	bool			diet;
 }				t_data;
 
 #endif
