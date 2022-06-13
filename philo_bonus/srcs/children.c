@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 22:37:59 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 22:45:34 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,4 @@ void	wait_for_children(t_data *data)
 		i++;
 	}
 	sem_post(data->death_sem);
-}
-
-int	init_child(t_data *data)
-{
-	data->philo.meal_sem_name = ft_itoa(data->philo.id);
-	return (0);
 }
