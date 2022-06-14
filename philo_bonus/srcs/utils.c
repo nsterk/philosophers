@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 20:26:20 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/13 14:37:53 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,15 @@ unsigned long	timestamp(unsigned long start_ms)
 	return (current_ms - start_ms);
 }
 
-void	usleep_adj(t_data *data, unsigned long start_ms)
+void	usleep_adj(t_data *data, unsigned long ms)
 {
-	unsigned long	current_time;
+	struct timeval	elapsed;
+	unsigned long	elapsed_ms;
 
-	current_time = timestamp(start_ms);
-	while (current_time < data->philo.resume)
-	{
-		if (current_time >= data->philo.tod)
-			do_die(data);
+	gettimeofday(&elapsed, NULL);
+	elapsed_ms = (elapsed.tv_sec * 1000) + (elapsed.tv_usec / 1000);
+	while (timestamp(elapsed_ms) < ms)
 		usleep(100);
-		current_time = timestamp(start_ms);
-	}
 }
 
 static const char	*ft_skipspace(const char *str)

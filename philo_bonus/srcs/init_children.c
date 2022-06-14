@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   threads.c                                          :+:    :+:            */
+/*   init_children.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/06/13 00:38:13 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 15:26:58 by nsterk        ########   odam.nl         */
+/*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
+/*   Updated: 2022/06/13 22:43:40 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
-#include <pthread.h>
 
-void	*monitoring_threads(void *arg)
+int	create_meal_sem(t_philo *philo)
 {
-	t_data	*data;
+	philo->meal_sem_name = ft_itoa(philo->id);
+	if (!philo->meal_sem_name)
+		return (1);
+	sem_unlink(philo->meal_sem);
+	philo->meal_sem = sem_open(philo->meal_sem_name, O_CREAT | O_EXCL, 0644, 1);
+	if (philo->meal_sem == SEM_FAILED)
+		return (1);
+	return (0);
+}
 
-	data = (t_data *)arg;
-	while (1)
-	{
-		sem_wait(data->sems[3]);
-		if (timestamp(data->start) >= (data->philo.last_meal + \
-				data->time_to_die))
-			log_message(data, E_DIE);
-	}
-	return (arg);
+int	init_child(t_data *data)
+{
+	return (0);
 }
