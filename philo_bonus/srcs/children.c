@@ -6,12 +6,22 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 22:45:34 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 02:14:58 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <signal.h>
+
+/*
+init_child
+	create sem_name
+	open_sem
+fork_process
+close sem
+unlink sem
+free sem_name
+*/
 
 int	fork_processes(t_data *data)
 {
