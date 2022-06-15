@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 02:17:05 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 18:14:48 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,14 @@ typedef struct s_philo
 //semaphores[0] = death_sem
 //semaphores[1] = write_sem
 //semaphores[2] = fork_sem
-//semaphores[3] = meal_sem
+
 typedef struct s_data
 {
 	pid_t			*pid;
-	sem_t			*sems[4];
-	sem_t			*meal_sem;
 	sem_t			*write_sem;
 	sem_t			*death_sem;
 	sem_t			*fork_sem;
-	t_philo			*philo;
+	t_philo			philo;
 	unsigned long	start;
 	int				nr_philos;
 	int				time_to_die;

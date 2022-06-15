@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/04 20:18:26 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 02:12:31 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 18:21:20 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ void	log_message(t_data *data, enum e_msg msg)
 	};
 
 	sem_wait(data->write_sem);
-	data->philo.timestamp = timestamp(data->start);
-	printf("%lu %d %s\n", data->philo.timestamp, data->philo.id + 1, msgs[msg]);
+	printf("%lu %d %s\n", timestamp(data->start), data->philo.id + 1, msgs[msg]);
 	if (msg == E_DIE)
 	{
-		close_semaphores(data, true, 3, false);
+		close_semaphores(data, true, false);
 		exit(0);
 	}
 	sem_post(data->write_sem);
@@ -56,7 +55,7 @@ void	log_error(t_data *data, enum e_error err)
 	if (err > E_THREAD)
 	{
 		unlink_semaphores();
-		close_semaphores(data, false, 3, false);
+		close_semaphores(data, false, false);
 	}
 	exit(1);
 }

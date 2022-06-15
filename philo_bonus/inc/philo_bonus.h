@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/14 22:58:18 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 18:17:33 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void			wait_for_children(t_data *data);
 // thread utils
 int				create_semaphores(t_data *data);
 int				open_semaphores(t_data *data);
-int				close_semaphores(t_data *data, bool post, int index, \
-	bool unlink);
+int				close_semaphores(t_data *data, bool post, bool unlink);
 int				unlink_semaphores(void);
 int				fork_processes(t_data *data);
 
@@ -45,6 +44,6 @@ void			log_error(t_data *data, enum e_error err);
 unsigned long	timestamp(unsigned long start_ms);
 void			log_message(t_data *data, enum e_msg msg);
 void			*monitoring_threads(void *arg);
-char	*ft_strjoin(char const *s1, char const *s2);
+char			*ft_strjoin(char const *s1, char const *s2);
 
 #endif

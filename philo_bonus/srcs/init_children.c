@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 02:19:25 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 18:12:51 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ fork_process
 close sem
 unlink sem
 free sem_name
+increment philo_id
 */
 
 int	create_meal_sem(t_philo *philo)
@@ -42,10 +43,12 @@ int	create_meal_sem(t_philo *philo)
 
 int	init_child(t_data *data)
 {
-	data->philo = malloc(sizeof(t_philo) * 1);
-	if (!data->philo)
-		return (1);
-	if (init_child(data->philo))
+	if (create_meal_sem(&data->philo))
 		return (1);
 	return (0);
+}
+
+void	sem_cleanup(t_philo *philo)
+{
+	sem_close(philo->meal_sem);
 }
