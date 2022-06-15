@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 18:14:48 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 23:18:34 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # define WRITE_SEM "/writesem"
 # define DEATH_SEM "/deathsem"
 # define FORK_SEM "/forksem"
-# define MEAL_SEM "/mealsem"
 
 enum e_msg
 {
@@ -43,6 +42,7 @@ enum e_error
 typedef struct s_philo
 {
 	int				id;
+	pthread_t		monitor_tid;
 	sem_t			*meal_sem;
 	char			*meal_sem_name;
 	int				to_eat;

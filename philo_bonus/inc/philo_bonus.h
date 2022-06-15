@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/13 15:04:00 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 18:17:33 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 23:19:39 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char			*ft_itoa(int n);
 void			log_error(t_data *data, enum e_error err);
 unsigned long	timestamp(unsigned long start_ms);
 void			log_message(t_data *data, enum e_msg msg);
-void			*monitoring_threads(void *arg);
+void			*monitor(void *arg);
 char			*ft_strjoin(char const *s1, char const *s2);
 
 #endif

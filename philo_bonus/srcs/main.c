@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 02:13:18 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 21:36:51 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv)
 	if (fork_processes(&data))
 		log_error(&data, E_PROCESS);
 	wait_for_children(&data);
-	close_semaphores(&data, false, 3, true);
+	close_semaphores(&data, false, true);
 	free(data.pid);
 	return (0);
 }

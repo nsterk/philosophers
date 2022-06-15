@@ -6,14 +6,14 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 00:38:13 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 18:19:03 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/15 23:19:45 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <pthread.h>
 
-void	*monitoring_threads(void *arg)
+void	*monitor(void *arg)
 {
 	t_data	*data;
 
