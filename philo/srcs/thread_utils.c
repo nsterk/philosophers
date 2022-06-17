@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/10 21:10:15 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/17 20:32:12 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	*monitor(void *arg)
 		while (i < data->nr_philos && someone_dead(data) == false)
 		{
 			pthread_mutex_lock(&data->thread[i].eat);
-			if (timestamp(data->start) > (data->thread[i].last_meal + data->time_to_die))
+			if (timestamp(data->start) > (data->thread[i].last_meal + \
+							data->time_to_die))
 				log_message(&data->thread[i], E_DIE);
 			pthread_mutex_unlock(&data->thread[i].eat);
 			i++;

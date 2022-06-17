@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/11 23:40:51 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/17 19:51:56 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,8 @@ static int	create_threads(t_data *data)
 static int	join_threads(t_data *data, int i)
 {
 	while (i < data->nr_philos)
-	{
-		if (pthread_join(data->thread[i].tid, NULL))
+		if (pthread_join(data->thread[i++].tid, NULL))
 			return (1);
-		i++;
-	}
 	return (0);
 }
 

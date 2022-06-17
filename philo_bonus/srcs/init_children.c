@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 23:21:41 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/17 19:03:16 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	create_meal_sem(t_philo *philo)
 		return (1);
 	sem_unlink(philo->meal_sem_name);
 	philo->meal_sem = sem_open(philo->meal_sem_name, O_CREAT | O_EXCL, 0644, 1);
+	free(philo->meal_sem_name);
 	if (philo->meal_sem == SEM_FAILED)
 		return (1);
 	return (0);
@@ -49,10 +50,17 @@ int	create_monitor(t_data *data)
 		return (1);
 }
 
+int	philo_cleanup(t_data *data)
+{
+	sem_close(philo->meal_sem);
+}
+
 int	init_child(t_data *data)
 {
 	if (create_meal_sem(&data->philo))
-		return (1);
+		exit(E_PROCESS);
 	data->philo.last_meal = timestamp(data->start);
+	if (create_monitor(data))
+		exit(E_PROCESS);
 	return (0);
 }
