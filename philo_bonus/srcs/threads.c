@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 00:38:13 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 23:19:45 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/18 18:13:43 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void	*monitor(void *arg)
 	data = (t_data *)arg;
 	while (1)
 	{
-		sem_wait(data->death_sem);
+		sem_wait(data->philo.meal_sem);
 		if (timestamp(data->start) >= (data->philo.last_meal + \
 				data->time_to_die))
 			log_message(data, E_DIE);
+		sem_post(data->philo.meal_sem);
 	}
-	return (arg);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 21:36:51 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/18 16:15:10 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ static int	create_monitor(t_data *data, pthread_t *monitor)
 		return (1);
 	else if (pthread_detach(*monitor))
 		return (1);
+	return (0);
+}
+
+static int	init_data(t_data *data)
+{
+	data->pid = malloc(sizeof(pid_t) * data->nr_philos);
+	if (!data->pid)
+		return (1);
+	if (data->philo.to_eat)
+		data->diet = true;
+	else
+		data->diet = false;
+	data->philo.id = 0;
+	data->start = timestamp(0);
 	return (0);
 }
 

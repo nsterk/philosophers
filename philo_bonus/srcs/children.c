@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 22:44:30 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/18 18:20:59 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	fork_processes(t_data *data)
 		if (data->pid[data->philo.id] < 0)
 			return (1);
 		if (data->pid[data->philo.id] == 0)
-			do_stuff(data);
+			init_child(data);
 		data->philo.id++;
 	}
 	usleep(500);

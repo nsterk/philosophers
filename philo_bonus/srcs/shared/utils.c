@@ -1,17 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   init.c                                             :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 22:14:36 by nsterk        ########   odam.nl         */
+/*   Created: 2022/06/18 16:06:12 by nsterk        #+#    #+#                 */
+/*   Updated: 2022/06/18 16:14:26 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
-#include <stdlib.h>
+
+size_t	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i] != '\0')
+			i++;
+	}
+	return (i);
+}
 
 static int	is_numeric(char *str)
 {
@@ -50,18 +62,4 @@ bool	valid_args(t_data *data, char **argv, int argc)
 		|| data->time_to_sleep < 0 || data->philo.to_eat < 0)
 		return (false);
 	return (true);
-}
-
-int	init_data(t_data *data)
-{
-	data->pid = malloc(sizeof(pid_t) * data->nr_philos);
-	if (!data->pid)
-		return (1);
-	if (data->philo.to_eat)
-		data->diet = true;
-	else
-		data->diet = false;
-	data->philo.id = 0;
-	data->start = timestamp(0);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 23:18:34 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/18 18:15:02 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ enum e_error
 	E_PROCESS
 };
 
+enum e_status
+{
+	E_FULL,
+	E_DEAD
+};
+
 typedef struct s_philo
 {
 	int				id;
@@ -46,6 +52,7 @@ typedef struct s_philo
 	sem_t			*meal_sem;
 	char			*meal_sem_name;
 	int				to_eat;
+	unsigned long	timestamp;
 	unsigned long	last_meal;
 }				t_philo;
 

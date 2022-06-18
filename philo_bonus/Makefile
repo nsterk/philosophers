@@ -6,18 +6,27 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/06/13 22:24:36 by nsterk        ########   odam.nl          #
+#    Updated: 2022/06/18 16:34:45 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	philo_bonus
-CC		=	cc
-FLAGS	=	-Wall -Wextra -Werror -fsanitize=address -g
-LIBS	=	-Iinc -pthread
-SRCS	=	srcs/main.c srcs/utils.c srcs/init.c srcs/actions.c \
-			srcs/semaphores.c srcs/children.c srcs/log.c srcs/threads.c \
-			ft_itoa.c
-OBJS	=	$(SRCS:%.c=%.o)
+NAME		=	philo_bonus
+CC			=	cc
+FLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
+LIBS		=	-Iinc -pthread
+
+BONUS_PATH	=	./srcs/
+SHARED_PATH	=	./srcs/shared/
+
+BONUS_C		=	main.c utils.c actions.c semaphores.c children.c log.c \
+				threads.c init_children.c
+SHARED_C	=	ft_atoi.c ft_itoa.c utils.c
+
+BONUS_SRCS	=	$(BONUS_C:%=$(BONUS_PATH)%)
+SHARED_SRCS	=	$(SHARED_C:%=$(SHARED_PATH)%)
+
+SRCS		=	$(BONUS_SRCS) $(SHARED_SRCS)
+OBJS		=	$(SRCS:%.c=%.o)
 
 all:	$(NAME)
 
