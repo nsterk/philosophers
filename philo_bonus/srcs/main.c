@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/18 16:15:10 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 16:26:19 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int	init_data(t_data *data)
 	else
 		data->diet = false;
 	data->philo.id = 0;
-	data->start = timestamp(0);
 	return (0);
 }
 

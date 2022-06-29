@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/18 18:21:52 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 16:35:30 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void	init_child(t_data *data)
 {
 	if (create_meal_sem(&data->philo))
 		exit(E_PROCESS);
-	if (open_semaphores(data))
-		exit(E_PROCESS);
-	data->philo.last_meal = timestamp(data->start);
-	do_stuff(data);
 	if (create_monitor(data))
 		exit(E_PROCESS);
+	do_stuff(data);
 }

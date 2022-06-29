@@ -6,25 +6,17 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/24 14:41:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/18 18:20:59 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 16:44:51 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <signal.h>
 
-/*
-init_child
-	create sem_name
-	open_sem
-fork_process
-close sem
-unlink sem
-free sem_name
-*/
-
 int	fork_processes(t_data *data)
 {
+	data->start = timestamp(0) + (unsigned long)data->nr_philos + 1;
+	data->philo.last_meal = 0;
 	while (data->philo.id < data->nr_philos)
 	{
 		data->pid[data->philo.id] = fork();
@@ -34,7 +26,6 @@ int	fork_processes(t_data *data)
 			init_child(data);
 		data->philo.id++;
 	}
-	usleep(500);
 	return (0);
 }
 

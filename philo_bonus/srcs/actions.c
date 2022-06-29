@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/18 18:16:55 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 16:41:34 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	do_stuff(t_data *data)
 {
-	data->philo.last_meal = timestamp(data->start);
+	while (timestamp(0) < data->start)
+		usleep(100);
 	if (data->philo.id % 2)
 		usleep(1000);
 	while (1)
