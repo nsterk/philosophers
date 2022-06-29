@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 16:26:19 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 17:11:57 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 #include <pthread.h>
 #include <signal.h>
 
-static void	*monitor_death(void *arg)
-{
-	t_data	*data;
+// static void	*monitor_death(void *arg)
+// {
+// 	t_data	*data;
 
-	data = (t_data *)arg;
-	sem_wait(data->death_sem);
-	kill_the_children(data);
-	return (NULL);
-}
+// 	data = (t_data *)arg;
+// 	sem_wait(data->death_sem);
+// 	kill_the_children(data);
+// 	return (NULL);
+// }
 
-static int	create_monitor(t_data *data, pthread_t *monitor)
-{
-	if (pthread_create(monitor, NULL, monitor_death, data))
-		return (1);
-	else if (pthread_detach(*monitor))
-		return (1);
-	return (0);
-}
+// static int	create_monitor(t_data *data, pthread_t *monitor)
+// {
+// 	if (pthread_create(monitor, NULL, monitor_death, data))
+// 		return (1);
+// 	else if (pthread_detach(*monitor))
+// 		return (1);
+// 	return (0);
+// }
 
 static int	init_data(t_data *data)
 {
@@ -49,7 +49,6 @@ static int	init_data(t_data *data)
 int	main(int argc, char **argv)
 {
 	t_data		data;
-	pthread_t	monitor;
 
 	if (argc < 5 || argc > 6 || valid_args(&data, argv, argc) == false)
 		log_error(&data, E_INVALID);
@@ -57,12 +56,12 @@ int	main(int argc, char **argv)
 		log_error(&data, E_INIT);
 	if (create_semaphores(&data))
 		log_error(&data, E_SEM);
-	if (create_monitor(&data, &monitor))
-		log_error(&data, E_THREAD);
+	// if (create_monitor(&data, &monitor))
+	// 	log_error(&data, E_THREAD);
 	if (fork_processes(&data))
 		log_error(&data, E_PROCESS);
+	close_semaphores(&data, true);
 	wait_for_children(&data);
-	close_semaphores(&data, false, true);
 	free(data.pid);
 	return (0);
 }

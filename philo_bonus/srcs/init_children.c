@@ -6,22 +6,31 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 16:35:30 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 20:20:16 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo_bonus.h>
 #include <pthread.h>
-/*
-init_child
-	create sem_name
-	open_sem
-fork_process
-close sem
-unlink sem
-free sem_name
-increment philo_id
-*/
+
+static void	*monitor(void *arg)
+{
+	t_data	*data;
+
+	data = (t_data *)arg;
+	while (timestamp(0) < data->start)
+		usleep(100);
+	while (1)
+	{
+		sem_wait(data->philo.meal_sem);
+		if (timestamp(data->start) >= (data->philo.last_meal + \
+				data->time_to_die))
+			log_message(data, E_DIE);
+		sem_post(data->philo.meal_sem);
+		usleep(100);
+	}
+	return (NULL);
+}
 
 static int	create_meal_sem(t_philo *philo)
 {
@@ -42,20 +51,11 @@ static int	create_meal_sem(t_philo *philo)
 	return (0);
 }
 
-static int	create_monitor(t_data *data)
-{
-	if (pthread_create(&data->philo.monitor_tid, NULL, monitor, data))
-		return (1);
-	if (pthread_detach(data->philo.monitor_tid))
-		return (1);
-	return (0);
-}
-
 void	init_child(t_data *data)
 {
 	if (create_meal_sem(&data->philo))
 		exit(E_PROCESS);
-	if (create_monitor(data))
+	if (pthread_create(&data->philo.monitor_tid, NULL, monitor, data))
 		exit(E_PROCESS);
 	do_stuff(data);
 }

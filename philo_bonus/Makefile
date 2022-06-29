@@ -6,7 +6,7 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/06/29 16:21:20 by nsterk        ########   odam.nl          #
+#    Updated: 2022/06/29 18:22:19 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ BONUS_PATH	=	./srcs/
 SHARED_PATH	=	./srcs/shared/
 
 BONUS_C		=	main.c utils.c actions.c semaphores.c children.c log.c \
-				threads.c init_children.c
+				init_children.c
 SHARED_C	=	ft_atoi.c ft_itoa.c utils.c
 
 BONUS_SRCS	=	$(BONUS_C:%=$(BONUS_PATH)%)

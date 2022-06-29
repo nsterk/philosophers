@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/17 16:09:24 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/15 18:18:23 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 17:10:59 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	create_semaphores(t_data *data)
 	data->write_sem = sem_open(WRITE_SEM, O_CREAT | O_EXCL, 0644, 1);
 	if (data->write_sem == SEM_FAILED)
 	{
-		close_semaphores(data, false, true);
+		close_semaphores(data, true);
 		return (1);
 	}
 	data->fork_sem = sem_open(FORK_SEM, O_CREAT | O_EXCL, 0644, \
 		data->nr_philos);
 	if (data->fork_sem == SEM_FAILED)
 	{
-		close_semaphores(data, false, true);
+		close_semaphores(data, true);
 		return (1);
 	}
 	return (0);
@@ -42,13 +42,13 @@ int	open_semaphores(t_data *data)
 	data->write_sem = sem_open(WRITE_SEM, O_RDWR);
 	if (data->write_sem == SEM_FAILED)
 	{
-		close_semaphores(data, false, false);
+		close_semaphores(data, false);
 		return (1);
 	}
 	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
 	if (data->fork_sem == SEM_FAILED)
 	{
-		close_semaphores(data, false, false);
+		close_semaphores(data, false);
 		return (1);
 	}
 	return (0);
@@ -65,16 +65,11 @@ int	unlink_semaphores(void)
 	return (ret);
 }
 
-int	close_semaphores(t_data *data, bool post, bool unlink)
+int	close_semaphores(t_data *data, bool unlink)
 {
 	int	ret;
 
 	ret = 0;
-	if (post == true)
-	{
-		sem_post(data->death_sem);
-		usleep(1000);
-	}
 	ret |= sem_close(data->death_sem);
 	ret |= sem_close(data->write_sem);
 	ret |= sem_close(data->fork_sem);

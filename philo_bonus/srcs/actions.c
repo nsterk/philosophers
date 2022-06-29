@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 16:41:34 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/06/29 18:19:05 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	do_stuff(t_data *data)
 	{
 		do_eat(data);
 		if (data->diet == true && !data->philo.to_eat)
-		{
-			close_semaphores(data, false, false);
 			exit(E_FULL);
-		}
 		do_sleep(data);
 		log_message(data, E_THINK);
 	}
