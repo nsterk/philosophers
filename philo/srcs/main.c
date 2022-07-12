@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/17 19:51:56 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/08 14:28:57 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ static int	create_threads(t_data *data)
 		if (pthread_create(&data->thread[i].tid, NULL,
 				do_stuff, &data->thread[i]))
 			return (1);
-		// if (pthread_detach(data->thread[i].tid))
-		// 	return (1);
 		i++;
 	}
 	return (0);
@@ -77,8 +75,11 @@ static int	create_threads(t_data *data)
 static int	join_threads(t_data *data, int i)
 {
 	while (i < data->nr_philos)
-		if (pthread_join(data->thread[i++].tid, NULL))
+	{
+		if (pthread_join(data->thread[i].tid, NULL))
 			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -91,7 +92,7 @@ int	main(int argc, char **argv)
 	if (validate_args(&data, argv, argc))
 		return (log_error(&data, E_INVALID));
 	if (init_data(&data))
-		return (log_error(&data, E_INIT)); //destroy mutexes moet evt nog hirna egbeuern
+		return (log_error(&data, E_INIT));
 	if (create_threads(&data))
 		return (log_error(&data, E_THREAD_CREAT));
 	if (join_threads(&data, 0))

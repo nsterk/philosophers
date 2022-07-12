@@ -6,13 +6,13 @@
 #    By: nsterk <nsterk@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/04/13 14:42:55 by nsterk        #+#    #+#                  #
-#    Updated: 2022/06/29 18:22:19 by nsterk        ########   odam.nl          #
+#    Updated: 2022/07/12 13:53:56 by nsterk        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo_bonus
 CC			=	cc
-FLAGS		=	-Wall -Wextra -Werror -g
+FLAGS		=	-Wall -Wextra -Werror
 LIBS		=	-Iinc -pthread
 
 BONUS_PATH	=	./srcs/

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 22:38:28 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 20:20:16 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/04 11:43:26 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int	create_meal_sem(t_philo *philo)
 	free(philo_id);
 	if (!philo->meal_sem_name)
 		return (1);
-	sem_unlink(philo->meal_sem_name);
 	philo->meal_sem = sem_open(philo->meal_sem_name, O_CREAT | O_EXCL, 0644, 1);
+	sem_unlink(philo->meal_sem_name);
 	free(philo->meal_sem_name);
 	if (philo->meal_sem == SEM_FAILED)
 		return (1);

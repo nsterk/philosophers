@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 16:47:56 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/12 13:58:45 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ typedef struct s_philo
 	unsigned long	timestamp;
 	unsigned long	last_meal;
 }				t_philo;
-
-//semaphores[0] = death_sem
-//semaphores[1] = write_sem
-//semaphores[2] = fork_sem
 
 typedef struct s_data
 {

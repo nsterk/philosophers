@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/17 16:09:24 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/29 17:10:59 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/12 13:59:15 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,6 @@ int	create_semaphores(t_data *data)
 	if (data->fork_sem == SEM_FAILED)
 	{
 		close_semaphores(data, true);
-		return (1);
-	}
-	return (0);
-}
-
-int	open_semaphores(t_data *data)
-{
-	data->death_sem = sem_open(DEATH_SEM, O_RDWR);
-	if (data->death_sem == SEM_FAILED)
-		return (1);
-	data->write_sem = sem_open(WRITE_SEM, O_RDWR);
-	if (data->write_sem == SEM_FAILED)
-	{
-		close_semaphores(data, false);
-		return (1);
-	}
-	data->fork_sem = sem_open(FORK_SEM, O_RDWR);
-	if (data->fork_sem == SEM_FAILED)
-	{
-		close_semaphores(data, false);
 		return (1);
 	}
 	return (0);
