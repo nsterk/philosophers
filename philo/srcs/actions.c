@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/13 00:35:38 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/12 17:39:04 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void	*do_stuff(void *arg)
 	data = (t_data *)thread->data;
 	if (data->nr_philos == 1)
 		return (one_philosopher(thread, data));
-	if (!(thread->id % 2))
+	while (timestamp(0) < data->start)
 		usleep(100);
+	if (!(thread->id % 2))
+		usleep(500);
 	while (someone_dead(data) == false)
 	{
 		take_forks(thread);

@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/10 17:37:20 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/12 17:27:09 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	init_data(t_data *data)
 		free(data->thread);
 		return (1);
 	}
-	data->start = timestamp(0);
+	data->start = timestamp(0) + (unsigned long)data->nr_philos + 2;
 	init_threads(data);
 	if (init_mutexes(data))
 		return (1);

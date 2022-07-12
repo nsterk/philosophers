@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/08 14:27:20 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/12 17:36:44 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,14 @@ bool	time_to_die(t_data *data, t_thread *thread)
 	return (time_to_die);
 }
 
-// int	create_monitor(t_data *data, t_thread *thread)
-// {
-// 	if (pthread_create(&thread->monitor, NULL, monitor_thread, thread))
-// 	{
-// 		pthread_mutex_lock(&data->death_mutex);
-// 		data->death = true;
-// 		pthread_mutex_unlock(&data->death_mutex);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-
 void	*monitor(void *arg)
 {
 	t_data		*data;
 	int			i;
 
 	data = (t_data *)arg;
+	while (timestamp(0) < data->start)
+		usleep(100);
 	while (someone_dead(data) == false)
 	{
 		i = 0;
