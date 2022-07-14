@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/03 20:59:03 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/04 16:45:35 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 13:44:23 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*one_philosopher(t_thread *thread, t_data *data)
 {
 	log_message(thread, E_FORK);
 	thread->resume = thread->timestamp + data->time_to_die;
-	usleep_adj(thread, data->start);
+	usleep_adj(data->start);
 	log_message(thread, E_DIE);
 	return (NULL);
 }

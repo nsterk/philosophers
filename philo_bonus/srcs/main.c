@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/08 14:27:45 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 13:54:47 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ static int	init_data(t_data *data)
 	data->pid = malloc(sizeof(pid_t) * data->nr_philos);
 	if (!data->pid)
 		return (1);
-	if (data->philo.to_eat)
-		data->diet = true;
-	else
-		data->diet = false;
 	data->philo.id = 0;
 	return (0);
 }

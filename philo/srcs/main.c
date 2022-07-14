@@ -6,53 +6,39 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/08 14:28:57 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 18:28:38 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
-#include <stdlib.h>
+#include <unistd.h>
 
-static int	is_numeric(char *str)
+static void	*monitor(void *arg)
 {
-	int	i;
+	t_data		*data;
+	int			i;
 
-	i = 0;
-	while (str[i])
+	data = (t_data *)arg;
+	while (timestamp(0) < data->start)
+		usleep(100);
+	while (someone_dead(data) == false && philos_full(data) == false)
 	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
+		i = 0;
+		while (i < data->nr_philos)
+		{
+			pthread_mutex_lock(&data->thread[i].eat);
+			if (timestamp(data->start) > (data->thread[i].last_meal + \
+							data->time_to_die))
+			{
+				log_message(&data->thread[i], E_DIE);
+				pthread_mutex_unlock(&data->thread[i].eat);
+				break ;
+			}	
+			pthread_mutex_unlock(&data->thread[i].eat);
+			i++;
+		}
 	}
-	return (i);
-}
-
-static int	validate_args(t_data *data, char **argv, int argc)
-{
-	int	i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (!is_numeric(argv[i]))
-			return (1);
-		i++;
-	}
-	data->nr_philos = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	data->portion_control = false;
-	data->to_eat = 0;
-	if (argc == 6)
-	{
-		data->to_eat = ft_atoi(argv[5]);
-		data->portion_control = true;
-	}
-	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
-		|| data->time_to_sleep < 0 || data->to_eat < 0)
-		return (1);
-	return (0);
+	return (NULL);
 }
 
 static int	create_threads(t_data *data)
@@ -67,21 +53,22 @@ static int	create_threads(t_data *data)
 		if (pthread_create(&data->thread[i].tid, NULL,
 				do_stuff, &data->thread[i]))
 			return (1);
+		pthread_detach(data->thread[i].tid);
 		i++;
 	}
 	return (0);
 }
 
-static int	join_threads(t_data *data, int i)
-{
-	while (i < data->nr_philos)
-	{
-		if (pthread_join(data->thread[i].tid, NULL))
-			return (1);
-		i++;
-	}
-	return (0);
-}
+// static int	join_threads(t_data *data, int i)
+// {
+// 	while (i < data->nr_philos)
+// 	{
+// 		if (pthread_join(data->thread[i].tid, NULL))
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 int	main(int argc, char **argv)
 {
@@ -89,13 +76,16 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		return (log_error(&data, E_AMOUNT));
-	if (validate_args(&data, argv, argc))
+	if (validate_args(&data, argv, argc) == false)
 		return (log_error(&data, E_INVALID));
+	if (data.diet == true && data.to_eat == 0)
+		return (0);
 	if (init_data(&data))
 		return (log_error(&data, E_INIT));
 	if (create_threads(&data))
 		return (log_error(&data, E_THREAD_CREAT));
-	if (join_threads(&data, 0))
-		return (log_error(&data, E_THREAD_JOIN));
+	pthread_join(data.monitoring_thread, NULL);
+	// if (join_threads(&data, 0))
+	// 	return (log_error(&data, E_THREAD_JOIN));
 	return (free_memory(&data));
 }

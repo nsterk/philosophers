@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/30 18:29:45 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/06/10 21:07:48 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 18:00:12 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,19 @@ typedef struct s_data
 {
 	t_thread		*thread;
 	pthread_t		monitoring_thread;
-	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	diet_mutex;
 	unsigned long	start;
 	int				nr_philos;
+	int				full_philos;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				to_eat;
 	bool			death;
-	bool			portion_control;
+	bool			diet;
 }				t_data;
 
 #endif

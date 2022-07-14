@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/20 14:13:19 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/12 17:27:09 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 18:08:43 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,7 @@ static int	init_threads(t_data *data)
 	return (0);
 }
 
-int	init_data(t_data *data)
-{
-	data->death = 0;
-	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
-	if (!data->thread)
-		return (1);
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
-	if (!data->forks)
-	{
-		free(data->thread);
-		return (1);
-	}
-	data->start = timestamp(0) + (unsigned long)data->nr_philos + 2;
-	init_threads(data);
-	if (init_mutexes(data))
-		return (1);
-	return (0);
-}
-
-int	init_mutexes(t_data *data)
+static int	init_mutexes(t_data *data)
 {
 	int	i;
 
@@ -68,9 +49,29 @@ int	init_mutexes(t_data *data)
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_init(&data->write_mutex, NULL))
+	if (pthread_mutex_init(&data->write_mutex, NULL)
+		|| pthread_mutex_init(&data->death_mutex, NULL)
+		|| pthread_mutex_init(&data->diet_mutex, NULL))
 		return (1);
-	if (pthread_mutex_init(&data->death_mutex, NULL))
+	return (0);
+}
+
+int	init_data(t_data *data)
+{
+	data->death = 0;
+	data->full_philos = 0;
+	data->thread = malloc(sizeof(t_thread) * data->nr_philos);
+	if (!data->thread)
+		return (1);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
+	if (!data->forks)
+	{
+		free(data->thread);
+		return (1);
+	}
+	data->start = timestamp(0) + (unsigned long)data->nr_philos + 2;
+	init_threads(data);
+	if (init_mutexes(data))
 		return (1);
 	return (0);
 }

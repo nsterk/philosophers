@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/12 17:36:44 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 18:38:13 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ bool	someone_dead(t_data *data)
 	return (death);
 }
 
+bool	philos_full(t_data *data)
+{
+	bool	filled;
+
+	if (data->diet == false)
+		return (false);
+	filled = false;
+	pthread_mutex_lock(&data->diet_mutex);
+	if (data->full_philos == data->nr_philos)
+		filled = true;
+	pthread_mutex_unlock(&data->diet_mutex);
+	return (filled);
+}
+
 bool	time_to_die(t_data *data, t_thread *thread)
 {
 	bool	time_to_die;
@@ -60,28 +74,4 @@ bool	time_to_die(t_data *data, t_thread *thread)
 		time_to_die = true;
 	pthread_mutex_unlock(&thread->eat);
 	return (time_to_die);
-}
-
-void	*monitor(void *arg)
-{
-	t_data		*data;
-	int			i;
-
-	data = (t_data *)arg;
-	while (timestamp(0) < data->start)
-		usleep(100);
-	while (someone_dead(data) == false)
-	{
-		i = 0;
-		while (i < data->nr_philos && someone_dead(data) == false)
-		{
-			pthread_mutex_lock(&data->thread[i].eat);
-			if (timestamp(data->start) > (data->thread[i].last_meal + \
-							data->time_to_die))
-				log_message(&data->thread[i], E_DIE);
-			pthread_mutex_unlock(&data->thread[i].eat);
-			i++;
-		}
-	}
-	return (NULL);
 }

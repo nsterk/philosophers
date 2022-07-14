@@ -6,12 +6,13 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/18 16:06:12 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/14 13:52:44 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/14 14:06:40 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo_bonus.h>
+#include <philo.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 size_t	ft_strlen(const char *str)
 {
@@ -40,7 +41,7 @@ static int	is_numeric(char *str)
 	return (i);
 }
 
-bool	valid_args(t_data *data, char **argv, int argc)
+bool	validate_args(t_data *data, char **argv, int argc)
 {
 	int	i;
 
@@ -55,15 +56,16 @@ bool	valid_args(t_data *data, char **argv, int argc)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	data->diet = false;
 	if (argc == 6)
 	{
-		data->philo.to_eat = ft_atoi(argv[5]);
+		data->to_eat = ft_atoi(argv[5]);
 		data->diet = true;
 	}
 	else
-		data->philo.to_eat = 0;
+		data->to_eat = 0;
 	if (data->nr_philos < 1 || data->time_to_die < 0 || data->time_to_eat < 0
-		|| data->time_to_sleep < 0 || data->philo.to_eat < 0)
+		|| data->time_to_sleep < 0 || data->to_eat < 0)
 		return (false);
 	return (true);
 }
