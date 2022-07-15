@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/23 18:02:11 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/14 18:49:38 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/15 13:31:27 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	*do_stuff(void *arg)
 void	do_eat(t_thread *thread, t_data *data)
 {
 	log_message(thread, E_EAT);
+	thread->to_eat--;
+	if (data->diet == true && thread->to_eat == 0)
+		mark_full(data);
 	pthread_mutex_lock(&thread->eat);
 	thread->last_meal = thread->timestamp;
 	pthread_mutex_unlock(&thread->eat);
 	usleep_adj(data->time_to_eat);
-	thread->to_eat--;
-	if (data->diet == true && thread->to_eat == 0)
-		mark_full(data);
 	pthread_mutex_unlock(thread->left_fork);
 	pthread_mutex_unlock(thread->right_fork);
 }

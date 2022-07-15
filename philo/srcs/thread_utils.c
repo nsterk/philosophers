@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/16 14:48:10 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/14 18:38:13 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/15 13:36:08 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	log_message(t_thread *thread, enum e_msg msg)
 	data = (t_data *)thread->data;
 	pthread_mutex_lock(&data->write_mutex);
 	thread->timestamp = timestamp(data->start);
-	if (someone_dead(data) == false)
+	if (someone_dead(data) == false && philos_full(data) == false)
 		printf("%lu %d %s\n", thread->timestamp, thread->id, msgs[msg]);
 	if (msg == E_DIE)
 	{
@@ -70,7 +70,7 @@ bool	time_to_die(t_data *data, t_thread *thread)
 
 	time_to_die = false;
 	pthread_mutex_lock(&thread->eat);
-	if (timestamp(data->start) >= (thread->last_meal + data->time_to_die))
+	if (timestamp(data->start) > (thread->last_meal + data->time_to_die))
 		time_to_die = true;
 	pthread_mutex_unlock(&thread->eat);
 	return (time_to_die);

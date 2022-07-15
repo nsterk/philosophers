@@ -6,7 +6,7 @@
 /*   By: nsterk <nsterk@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/14 13:58:35 by nsterk        #+#    #+#                 */
-/*   Updated: 2022/07/14 18:28:38 by nsterk        ########   odam.nl         */
+/*   Updated: 2022/07/15 13:38:51 by nsterk        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,11 @@ static void	*monitor(void *arg)
 		i = 0;
 		while (i < data->nr_philos)
 		{
-			pthread_mutex_lock(&data->thread[i].eat);
-			if (timestamp(data->start) > (data->thread[i].last_meal + \
-							data->time_to_die))
+			if (time_to_die(data, &data->thread[i]) == true)
 			{
 				log_message(&data->thread[i], E_DIE);
-				pthread_mutex_unlock(&data->thread[i].eat);
-				break ;
+				return (NULL);
 			}	
-			pthread_mutex_unlock(&data->thread[i].eat);
 			i++;
 		}
 	}
